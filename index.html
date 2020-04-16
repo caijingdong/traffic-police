@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_1239932_ywhhebeoh8.css"></link>
+
+    <title>温州市公安局交通管理局</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+  <script>
+  ;
+(function(win) {
+    var doc = win.document;
+    var docEl = doc.documentElement;
+    var tid;
+
+    function refreshRem() {
+        var width = docEl.getBoundingClientRect().width;
+        if (width > 1920) { // 最大宽度
+            width = 1920;
+        }
+        var rem = width / 16; // 将屏幕宽度分成10份， 1份为1rem
+        docEl.style.fontSize = rem + 'px';
+    }
+
+    win.addEventListener('resize', function() {
+        clearTimeout(tid);
+        tid = setTimeout(refreshRem, 300);
+    }, false);
+    win.addEventListener('pageshow', function(e) {
+        if (e.persisted) {
+            clearTimeout(tid);
+            tid = setTimeout(refreshRem, 300);
+        }
+    }, false);
+
+    refreshRem();
+
+})(window);
+/* function sb(name , xingqu , xingbie){
+    var obj = new Object()
+    obj.name = name;
+    obj.xingqu = xingqu;
+    obj.xingbie = xingbie;
+    obj.sayName = function(){
+        alert(this.name)
+    };
+     return obj; 
+}
+var obj2 = sb("xxxx",20,"dasda");
+console.log(obj2)
+const p1 = new Promise((resolve,reject)=>{
+  resolve(1)
+})
+p1.then(value => {console.log(1)})
+//由.then指定的回调函数执行的结果决定
+//如果抛出异常，新promise变为rejected,reason为抛出的异常，如果返回的是非promise的任意值，新promise变为resolved，value为返回的值
+new Promise((resolve,reject) => {
+  reject(1)
+
+
+}).then(
+  value => {
+    console.log(value)
+
+  },
+  reason => {
+    console.log(reason)
+    return 2
+  }
+).then(
+  value => {
+    console.log(value)
+    
+
+  },
+  reason => {
+    console.log(reason)
+
+  }
+) */
+</script>
+<style>
+  body{
+    background-color: #ffffff;
+   
+  }
+ 
+</style>
+</html>
