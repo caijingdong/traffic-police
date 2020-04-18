@@ -94,6 +94,7 @@ export default {
           },
           onFail: function(err) {
             console.log(err);
+            alert('user.get fail: ' + JSON.stringify(err))
           }
         });
       });
