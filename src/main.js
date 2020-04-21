@@ -19,6 +19,9 @@ import { Calendar } from 'vant';
 import { RadioGroup, Radio } from 'vant';
 import { Picker } from 'vant';
 import { Popup } from 'vant';
+import { Toast } from 'vant';
+
+Vue.use(Toast);
 
 Vue.use(Popup);
 

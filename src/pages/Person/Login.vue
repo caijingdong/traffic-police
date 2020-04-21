@@ -24,6 +24,7 @@
       <img class="jiantou" src="./images/jiantou.png" alt />
     </div>
     <div class="zc">技术支持：温州市交通管理局</div>
+    <loading v-if="loading" ref="loading"></loading>
   </div>
 </template>
 <script>
@@ -33,8 +34,12 @@ import axios from "axios";
 import { MY_POST_QUERY, MY_GET, MY_POST_DATA } from "./api/api";
 import { des } from "./des";
 import * as dd from "dingtalk-jsapi";
+import loading from "@/components/loading/Loading.vue";
 export default {
   name: "sousuo",
+  components: {
+    loading
+  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.trim().length < 1) {
@@ -69,9 +74,15 @@ export default {
     ...mapMutations(["changeLogin"]),
     noLogin(url) {
       let vm = this;
+      /*       this.$toast.loading({
+        message: "加载中...",
+        forbidClick: true,
+        loadingType: "spinner"
+      }); */
+      this.loading = true;
       dd.ready(function() {
         dd.runtime.permission.requestAuthCode({
-          corpId: "ding3b87191431b1e7eb35c2f4657eb6378f",
+          corpId: "dingb66de550406f10f435c2f4657eb6378f",
           // 企业id
           onSuccess: function(info) {
             // 如果返回 Success
@@ -79,22 +90,26 @@ export default {
             let code = qs.stringify(info);
             MY_POST_DATA("/js/dingding/login", code)
               .then(res => {
-                console.log(res.data);
                 if (res.data.code == "0000") {
+                  this.loading = false;
                   vm.$router.push("/Person");
-                  alert("登录成功");
+                  //this.$toast("登录成功");
                   vm.$store.state.showname = false;
                 } else {
-                 alert("1111")
+                  this.$toast("登录失败");
+                  console.log(res);
                 }
               })
               .catch(e => {
-                vm.$message.error("免登失败，请联系管理员");
+                //vm.$message.error("免登失败，请联系管理员");
+                this.$toast("登录失败");
+                this.loading = false;
               });
           },
           onFail: function(err) {
-            console.log(err);
-            alert('user.get fail: ' + JSON.stringify(err))
+            //alert('user.get fail: ' + JSON.stringify(err));
+            this.loading = false;
+            this.$toast("登录失败");
           }
         });
       });
@@ -111,7 +126,7 @@ export default {
         //alert("账号或密码不能为空");
       } */
       if (this.username === "" || this.password === "") {
-        alert("密码输入错误");
+        this.$toast("密码输入错误");
       } else {
         var secretKey = "thinkgem,jeesite,com";
         var username = DesUtils.encode(this.username, secretKey);
@@ -119,6 +134,7 @@ export default {
         let params = {};
         params.username = username;
         params.password = password;
+        this.loading = true;
         /* MY_POST_QUERY("/js/a/login", params) */
         this.axios({
           method: "post",
@@ -129,16 +145,20 @@ export default {
             const data = res.data;
             if (data.result == "true") {
               // this.$store.state.userInfo = data.data;
+              this.loading = false;
               this.$store.commit("login");
               this.$store.state.isLogin = true;
               this.$router.push("/Home");
               //console.log(res.data)
             } else {
-              alert("用户民或密码错误请重新输入");
+              //alert("用户名或密码错误请重新输入");
+              this.$toast("登录失败");
+              this.loading = false;
             }
           })
           .catch(() => {
-            alert("服务器报错");
+            this.$toast("登录失败");
+            this.loading = false;
           });
       }
     },

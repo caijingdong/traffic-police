@@ -439,7 +439,6 @@ export default {
           if (res.data.code == "0000") {
             //console.log("请求以后的标记");
             let doc = res.data.data;
-
             this.personid = doc.id;
             // console.log(doc);
             this.lists = doc;
@@ -454,7 +453,7 @@ export default {
               }
             });
             this.dada = this.dada[0].treeNames;
-            this.getEquepment();
+            //this.getEquepment();
             //this.code = this.code
             //console.log(this.code);
             console.log(this.record1);
@@ -469,13 +468,12 @@ export default {
       this.axios({
         method: "get",
         url: "/js/a/ams/equipment/equipment/viewData",
-        params: {
+       /*  params: {
           "personnelFile.id": this.personid
-        }
+        } */
       })
         .then(res => {
           //console.log(res.data);
-
           this.equipments = res.data.list;
           //console.log(this.equipments);
           this.office1 = this.equipments[0].office;

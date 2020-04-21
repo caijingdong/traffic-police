@@ -2,6 +2,23 @@
   <div class="hello">
     <van-cell-group>
       <van-field
+        v-model="username"
+        required
+        clearable
+        label="请假类型"
+        :placeholder="colovalue"
+        input-align="right"
+        label-align="left"
+        label-width="84px"
+        disabled
+        size="large"
+        right-icon="arrow"
+        @click="getBusiness"
+      />
+    </van-cell-group>
+
+    <!--     <van-cell-group>
+      <van-field
         required
         clearable
         label="请假类型"
@@ -22,9 +39,9 @@
         @cancel="showPicker = false"
         @confirm="onConfirmtype"
       />
-    </van-popup>
+    </van-popup>-->
     <div
-      style="font-size:0.4rem;text-align:left;height:1rem;;line-height:1rem;padding-left:0.4rem"
+      style="font-size:0.4rem;text-align:left;height:1.2rem;;line-height:1.2rem;padding-left:0.4rem"
     >剩余时间：{{leaveYear}}天</div>
     <!--   <van-cell title="选择单个日期" :value="startdate" @click="show = true" /> -->
 
@@ -56,7 +73,7 @@
         required
         @click="show = true"
     />-->
-    <van-field
+    <!--     <van-field
       label="开始时间"
       :placeholder="enddate"
       is-link
@@ -103,26 +120,55 @@
         type="datetime"
         title="选择时间"
         :loading="isLoadingShow"
-        :min-date="minDate"
+        :min-date="minDate";
         :max-date="maxDate"
         :formatter="formatter"
         @cancel="show = false"
         @confirm="confirmPicker"
       />
-    </van-popup>
-
-    <van-field
-      v-model="days"
-      type="textarea"
-      label="时长(天)"
-      placeholder="请输入请假天数"
-      input-align="right"
-      label-align="left"
-      label-width="77px"
-      size="large"
-      required
-    />
-
+    </van-popup>-->
+    <van-cell-group style="margin-bottom:0.6rem;">
+      <van-field
+        v-model="username"
+        required
+        clearable
+        label="开始时间"
+        :placeholder="startTime"
+        input-align="right"
+        label-align="left"
+        size="large"
+        disabled
+        right-icon="arrow"
+        label-width="84px"
+        @click="getStarttime"
+      />
+      <van-field
+        v-model="username"
+        type="password"
+        label="结束时间"
+        :placeholder="endTime"
+        input-align="right"
+        label-align="left"
+        label-width="84px"
+        size="large"
+        right-icon="arrow"
+        disabled
+        required
+        @click="getEndtime"
+      />
+    </van-cell-group>
+    <van-cell-group>
+      <van-field
+        v-model="days"
+        label="时长(天)"
+        placeholder="请输入请假天数"
+        input-align="right"
+        label-align="left"
+        label-width="80px"
+        size="large"
+        required
+      />
+    </van-cell-group>
     <!--  <div class="list-text">{{dateLong}}</div> -->
     <van-cell-group>
       <van-field label="请假事由" label-align="left" label-width="84px" disabled required size="large" />
@@ -169,7 +215,7 @@ export default {
   },
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
+     
       isLoadingShow: true,
       password: "",
       hdYear: "",
@@ -181,13 +227,13 @@ export default {
       value: "",
       value1: "",
       hdYear: "",
-      endtime: "",
+      //endtime: "",
       business: "",
       startdate: "",
       enddate: "",
-      show: false,
-      show1: false,
-      showPicker: false,
+      //show: false,
+      //show1: false,
+      //showPicker: false,
       endTime: "请选择时间",
       startTime: "请选择时间",
       className: "",
@@ -239,15 +285,71 @@ export default {
     }
   },
   methods: {
-    showPopup() {
+    getBusiness() {
+      const that = this;
+      dd.ready(function() {
+        dd.biz.util.chosen({
+          source: [
+            {
+              key: "年休假", //显示文本
+              value: "123" //值，
+            },
+            {
+              key: "婚假",
+              value: "234"
+            },
+            {
+              key: "产假",
+              value: "234"
+            },
+            {
+              key: "护理假", //显示文本
+              value: "123" //值，
+            },
+            {
+              key: "事假",
+              value: "234"
+            },
+            {
+              key: "丧假",
+              value: "234"
+            },
+            {
+              key: "出国假", //显示文本
+              value: "123" //值，
+            },
+            {
+              key: "出境假",
+              value: "234"
+            }
+          ],
+          selectedKey: "年休假",
+
+          onSuccess: function(result) {
+            that.colovalue = result.key;
+            //that.value = result.value;
+            //onSuccess将在点击完成之后回调
+            /*
+        {
+            key: '选项2',
+            value: '234'
+        }
+        */
+          },
+          onFail: function(err) {}
+        });
+      });
+    },
+
+    /*  showPopup() {
       this.show = true;
       this.isLoadingShow = true;
       setTimeout(() => {
         this.isLoadingShow = false;
       }, 500);
-    },
+    }, */
     // 确认选择的时间
-    confirmPicker(val) {
+    /*     confirmPicker(val) {
       let year = val.getFullYear();
       let month = val.getMonth() + 1;
       let day = val.getDate();
@@ -343,19 +445,20 @@ export default {
     },
     onCancel() {
       Toast("取消");
-    },
+    }, */
 
-    /*     getStarttime() {
+    getStarttime() {
       const that = this;
       dd.ready(function() {
-        dd.biz.calendar.chooseHalfDay({
-          default: 1494415396228,
+        dd.biz.util.datetimepicker({
+          format: "yyyy-MM-dd HH:mm",
+          value: "2020-4-20 08:00",
           //默认显示
           onSuccess: function(result) {
             //onSuccess将在点击完成之后回调
             //alert(JSON.stringify(result))
 
-            that.value = result.chosen;
+            that.startTime = result.value;
             // alert(that.value)
           },
           onFail: function(err) {}
@@ -368,18 +471,19 @@ export default {
       dd.ready(function() {
         dd.biz.util.datetimepicker({
           format: "yyyy-MM-dd HH:mm",
-          value: "2019-12-30 08:00", //默认显示
+          value: "2020-04-20 08:00", //默认显示
           onSuccess: function(result) {
             //onSuccess将在点击完成之后回调
             //alert(JSON.stringify(result))
 
-            that.endtime = result.value;
+            that.endTime = result.value;
             //alert(that.value)
           },
           onFail: function(err) {}
         });
       });
-    }, */
+    },
+
     getType() {
       dd.ready(function() {
         dd.biz.calendar.chooseInterval({

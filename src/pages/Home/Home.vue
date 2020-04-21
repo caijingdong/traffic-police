@@ -4,7 +4,7 @@
     <!-- <div class="all clearfix" @click="$router.push({ name: 'Search' })">
       <input class="header_search" readonly="“readonly”" type="text" value="智能搜索" />
       <div class="search"></div>
-    </div> -->
+    </div>-->
     <!--首页轮播图-->
     <div class="banner">
       <img src="./assets/banner.png" alt />
@@ -19,9 +19,9 @@
         <li class="business_li" @click="$router.push({ name: 'Wages' })">
           <img style="display:block;" src="./assets/gzmx.png" alt />
         </li>
-       <!--  <li class="business_li" @click="$router.push({ name: 'Qingwu' })">
+        <!--  <li class="business_li" @click="$router.push({ name: 'Qingwu' })">
           <img style="display:block;" src="./assets/qwap.png" alt />
-        </li> -->
+        </li>-->
         <li class="business_li" @click="$router.push({ name: 'HelloWorld' })">
           <img style="display:block;" src="./assets/qxjgl.png" alt />
         </li>
@@ -43,12 +43,13 @@ export default {
   data() {
     return {};
   },
+
   methods: {
     openPicker() {
-        this.$refs.picker.open();
-      },
-      getinfo(){
-            /*  let arr4 = [
+      this.$refs.picker.open();
+    },
+    getinfo() {
+      /*  let arr4 = [
         {
           step: "1",
           type: { idd: "11", adsa: "22323" },
@@ -71,25 +72,24 @@ export default {
       this.data = data1
       console.log(this.data) */
       var obj1 = {
-		2: "尺寸",
-		3: "颜色"
-	};
-	var spec_value = {
-		2: {
-			1: "礼盒装",
-			6: "180g"
-		},
-		3:{
-			2:"红色",
-			4:"黑色"
-		}
- 
-	};
-/* 	console.log(obj1);
+        2: "尺寸",
+        3: "颜色"
+      };
+      var spec_value = {
+        2: {
+          1: "礼盒装",
+          6: "180g"
+        },
+        3: {
+          2: "红色",
+          4: "黑色"
+        }
+      };
+      /* 	console.log(obj1);
 	console.log(spec_value); */
-	var arr = [];//创建一个空数组存放循环出来的对象
-	var index = 0;
-/* 	for(var k in obj1) {
+      var arr = []; //创建一个空数组存放循环出来的对象
+      var index = 0;
+      /* 	for(var k in obj1) {
 		var obj = {};
 		obj.name = obj1[k];
 		obj.id = k;
@@ -98,25 +98,22 @@ export default {
 		console.log(k);//打印出 2、3 此处的k代表的是属性
  
 	} */
-	for(var j in spec_value) {
-		for(var m in spec_value[j]) {
-			var objC = {};
-			objC.name = spec_value[j][m];
-			//objC.id = m; 
-			arr.push(objC);
-		}
-		
-		
-	}
-	
-	console.log(arr);
-
-
+      for (var j in spec_value) {
+        for (var m in spec_value[j]) {
+          var objC = {};
+          objC.name = spec_value[j][m];
+          //objC.id = m;
+          arr.push(objC);
+        }
       }
+
+      console.log(arr);
+    }
   },
-   created: function() {
+
+  created: function() {
     this.getinfo();
-  },
+  }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
