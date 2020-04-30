@@ -215,7 +215,6 @@ export default {
   },
   data() {
     return {
-     
       isLoadingShow: true,
       password: "",
       hdYear: "",
@@ -455,9 +454,6 @@ export default {
           value: "2020-4-20 08:00",
           //默认显示
           onSuccess: function(result) {
-            //onSuccess将在点击完成之后回调
-            //alert(JSON.stringify(result))
-
             that.startTime = result.value;
             // alert(that.value)
           },
@@ -505,9 +501,10 @@ export default {
     postData() {
       var c = this.days;
       var d = this.message;
+      var e = this.colovalue;
       var a = new Date(this.endTime).getTime();
       var b = new Date(this.startTime).getTime();
-      if (d === "" || c === "" || a === "" || b === "") {
+      if (d === "" || c === "" || a === "" || b === "" || e === "") {
         alert("必填项不能为空");
       } else if (a < b) {
         alert("开始时间需要小于结束时间");
@@ -527,13 +524,17 @@ export default {
           }
         })
           .then(res => {
-            console.log("postData:执行完毕");
-            this.loading = false;
-            alert("提交成功");
-            this.$router.push({ name: "list" });
+            if (res.status == 200) {
+              this.loading = false;
+              this.$toast("提交成功");
+              this.$router.push({ name: "list" });
+            } else {
+              this.$toast("请假失败" + JSON.stringify(res.message));
+              this.loading = false;
+            }
           })
           .catch(e => {
-            alert("获取信息失败");
+            this.$toast("请假失败" + JSON.stringify(e));
           });
       }
     },
@@ -544,7 +545,6 @@ export default {
       }).then(res => {
         console.log(res.data);
         this.hdYear = res.data.annualLeaveTotal;
-
         this.leaveYear = res.data.annualLeaveRemaining;
         console.log(this.leaveYear);
       });

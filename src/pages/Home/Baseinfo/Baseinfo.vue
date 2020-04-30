@@ -96,7 +96,7 @@
           <van-tab title="工作" class="list">
             <li class="listxx">
               工作单位
-              <span>{{lists.statePersonnel}}</span>
+              <span>{{office.officeName}}</span>
             </li>
             <li class="listxx">
               工作状态
@@ -223,7 +223,7 @@
               <span>{{lists.hipline}}</span>
             </li>
           </van-tab>
-          <van-tab title="补充" class="list">
+         <!--  <van-tab title="补充" class="list">
             <li class="listxx">
               填报人
               <span>{{lists.informant}}</span>
@@ -236,7 +236,7 @@
               备注
               <span>{{lists.remarks}}</span>
             </li>
-          </van-tab>
+          </van-tab> -->
         </van-tabs>
       </van-tab>
 
@@ -244,7 +244,7 @@
         <!-- <div class="border" ></div> -->
         <div class="recoder">
         <ul v-for="record in record1" class="list-record" :key="record.id">
-          <li class="listxx1 tebie" style="font-weight:bold；border-bottom:1px solid #e5e5e5">履历信息</li>
+          <li class="listxx1 tebie" style="font-weight:bold；border-bottom:1px solid #e5e5e5">履历信息 收起</li>
 
           <li class="listxx1">
             开始时间
@@ -440,7 +440,7 @@ export default {
             //console.log("请求以后的标记");
             let doc = res.data.data;
             this.personid = doc.id;
-            // console.log(doc);
+             //console.log(doc);
             this.lists = doc;
             this.office = this.lists.office;
             //this.officename = this.office.officeName
@@ -453,24 +453,20 @@ export default {
               }
             });
             this.dada = this.dada[0].treeNames;
-            //this.getEquepment();
-            //this.code = this.code
-            //console.log(this.code);
-            console.log(this.record1);
+            //console.log(this.record1);
           } else {
+            this.$toast("user.get fail: " + JSON.stringify(res));
           }
         })
         .catch(e => {
-          console.log("获取信息失败");
+          this.$toast("user.get fail: " + JSON.stringify(e));
         });
     },
     getEquepment() {
       this.axios({
         method: "get",
         url: "/js/a/ams/equipment/equipment/viewData",
-       /*  params: {
-          "personnelFile.id": this.personid
-        } */
+      
       })
         .then(res => {
           //console.log(res.data);
@@ -494,14 +490,10 @@ export default {
             }
           });
           this.equiptype = this.equiptype[0].treeNames;
-          //console.log(this.equiptype);
-
-          //this.code = this.code
-          //console.log(this.officename);
-          // console.log(成功);
+ 
         })
         .catch(e => {
-          //console.log("获取信息失败");
+          this.$toast("user.get fail: " + JSON.stringify(res));
         });
     },
     getValueobj() {
@@ -533,7 +525,7 @@ export default {
           //console.log(this.code1);
         })
         .catch(err => {
-          console.log(err);
+          this.$toast("user.get fail: " + JSON.stringify(err));
         });
     }
   },

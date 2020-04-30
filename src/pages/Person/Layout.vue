@@ -30,7 +30,7 @@ export default {
           this.$router.push("/Login");
         })
         .catch(e => {
-          alert("1");     
+          this.$toast("user.get fail: " + JSON.stringify(res));  
         });
     }
   }

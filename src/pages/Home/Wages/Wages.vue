@@ -17,14 +17,61 @@
             class="list"
             :name="item.c"
             v-for="(item,indexs) in doc"
-            :title="item.officeMonthlySalary.month"
+            :title="item.officeMonthlySalary.month + '月'"
             :key="indexs"
           >
             <li class="listxx">
              工资
               <span>{{item.salary}}</span>
             </li>
-            
+            <li class="listxx">
+             岗位补贴
+              <span>{{item.postAllowance}}</span>
+            </li>
+             <li class="listxx">
+             层级工资
+              <span>{{item.wageLevel}}</span>
+            </li>
+            <li class="listxx">
+             加班补贴
+              <span>{{item.overtimeAllowance}}</span>
+            </li>
+            <li class="listxx">
+             绩效奖
+              <span>{{item.meritPay}}</span>
+            </li>
+             <li class="listxx">
+             职位津贴
+              <span>{{item.jobAllowance}}</span>
+            </li>
+            <li class="listxx">
+             其他补贴
+              <span>{{item.otherExpenses}}</span>
+            </li>
+            <li class="listxx">
+             勤务
+              <span>{{item.checkOnWorkAttendance}}</span>
+            </li>
+            <li class="listxx">
+             合计
+              <span>{{item.total}}</span>
+            </li>
+            <li class="listxx">
+             社保
+              <span>{{item.insuranceDeduction}}</span>
+            </li>
+            <li class="listxx">
+            公积金
+              <span>{{item.accumulationFund}}</span>
+            </li>
+            <li class="listxx">
+            实发工资
+              <span>{{item.realWages}}</span>
+            </li>
+            <li class="listxx">
+            考核情况
+              <span>{{item.situation}}</span>
+            </li>
           </van-tab>
         </van-tabs>
        
@@ -66,13 +113,14 @@ export default {
         .then(res => {
           if (res.data.code == "0000") {
             let doc = res.data.data.personnelMonthlySalaries;            
-            this.doc =  doc;            
+            this.doc =  doc;   
+            console.log(this.doc)         
           } else {
-            alert("1111");
+            this.$toast("user.get fail: " + JSON.stringify(res));
           }
         })
         .catch(e => {
-          alert("获取信息失败");
+          this.$toast("user.get fail: " + JSON.stringify(e));
         });
     },
     getin(){

@@ -18,7 +18,7 @@
             :title="assess.year"
             :key="indexs"
           >
-            <ul v-for="assess in assess1" :key="assess.id">
+           <!--  <ul v-for="assess in assess1" :key="assess.id"> -->
               <li class="listxx border">
                 机构名称
                 <span>{{office.officeName}}</span>
@@ -31,8 +31,6 @@
                 评定等级
                 <span>{{userdata}}</span>
               </li>
-
-              <!-- <ul v-for="month in items" :key="month.message"> -->
 
               <li class="listxx">
                 1月
@@ -50,8 +48,8 @@
                 4月
                 <span></span>
               </li>
-            </ul>
-            <!--  </ul> -->
+           <!--  </ul> -->
+           
           </van-tab>
         </van-tabs>
       </van-tab>
@@ -89,6 +87,7 @@ export default {
         url: "/js/a/ams/personnelfile/personnelFile/getCurrentUserPersonnelFile"
       })
         .then(res => {
+        
           this.lists = res.data.data.name;
           this.personid = res.data.data.id;
           let office = res.data.data.office;
@@ -97,39 +96,42 @@ export default {
           this.getview();
           this.getmonth();
         })
-        .catch(e => {
-          alert("获取信息失败");
+        .catch(err => {
+           this.$toast("获取信息失败1" + JSON.stringify(err));
         });
     },
     getview() {
       //console.log(this.lists, "getView-Method");
       this.axios({
         method: "get",
-        /*  "/js/a/ams/assessmentresult/assessmentResult/viewData?name=" +
-          this.lists +
-          "&office='+this.officeid'" */
         url: "/js/a/ams/assessmentresult/assessmentResult/viewData",
-        params: {
-          name: this.personid
-          //office: this.officeid
-        }
       })
         .then(res => {
-          //console.log(res.data);
-          console.log("请求成功")
-          this.assess1 = res.data.list;
-          let doc = res.data.list[0];
-          this.office = doc.office;
+        if (res.status == 200) {
+          
+           this.assess1 = res.data.list;
+           
+          /* let doc = res.data.list[0];
+          this.office = doc.office; */
           this.getmonth();
-          this.userdata = this.code.filter(item => {
+          
+           this.userdata = this.code.filter(item => {
             if (this.assess1[0].rating == item.dictValue) {
               return item;
             }
           });
-          this.userdata = this.userdata[0].treeNames;
+          console.log(this.assess1)
+          this.userdata = this.userdata[0].treeNames; 
+        }else{
+          
+        }
+         
+         
           
         })
-        .catch(e => {});
+        .catch(e => {
+            this.$toast("获取失败12" + JSON.stringify(e));
+        });
     },
     getValueobj() {
       this.axios({
@@ -146,15 +148,15 @@ export default {
         }
       })
         .then(res => {
-          //console.log(res.data);
-          //let code = res.data[2]
-
+          if (res.status == 200) {
           this.code = res.data.data[0];
+          //console.log(this.code)
+          }else{
 
-          //console.log(this.code);
+          }
         })
         .catch(err => {
-          console.log(err);
+           this.$toast("获取失败" + JSON.stringify(err));
         });
     },
     getmonth() {
@@ -170,7 +172,9 @@ export default {
         .then(res => {
           //console.log(res.data);
         })
-        .catch(e => {});
+        .catch(e => {
+           this.$toast("获取失败" + JSON.stringify(err));
+        });
     }
   },
   created() {
@@ -182,7 +186,7 @@ export default {
       // `this` 指向 vm 实例
       this.name = this.lists;
       // console.log(this.name)
-      console.log(this.lists);
+      //console.log(this.lists);
       return name;
     }
   },

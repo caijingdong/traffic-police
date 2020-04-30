@@ -79,37 +79,45 @@ export default {
         forbidClick: true,
         loadingType: "spinner"
       }); */
-      this.loading = true;
+      vm.loading = true;
       dd.ready(function() {
         dd.runtime.permission.requestAuthCode({
-          corpId: "dingb66de550406f10f435c2f4657eb6378f",
-          // 企业id
+          //corpId: "dingb66de550406f10f435c2f4657eb6378f",
+          corpId: "ding3b87191431b1e7eb35c2f4657eb6378f",
+          //ding3b87191431b1e7eb35c2f4657eb6378f
           onSuccess: function(info) {
             // 如果返回 Success
             // 将返回的校验码传给 /m/loginDingDing
-            let code = qs.stringify(info);
-            MY_POST_DATA("/js/dingding/login", code)
+            let data = qs.stringify(info);
+          
+           /*  MY_POST_DATA("/js/dingding/login", code) */
+                vm.axios({
+              method: "post",
+              url: "/js/dingding/login",
+              data
+            }) 
               .then(res => {
                 if (res.data.code == "0000") {
-                  this.loading = false;
+                  vm.loading = false;
                   vm.$router.push("/Person");
-                  //this.$toast("登录成功");
+                  vm.$toast("登录成功");
                   vm.$store.state.showname = false;
                 } else {
-                  this.$toast("登录失败");
+                  vm.$toast("登录失败" + JSON.stringify(res));
                   console.log(res);
                 }
               })
               .catch(e => {
                 //vm.$message.error("免登失败，请联系管理员");
-                this.$toast("登录失败");
-                this.loading = false;
+                // this.$toast("登录失败");
+                vm.$toast("user.get fail: " + JSON.stringify(e));
+                vm.loading = false;
               });
           },
           onFail: function(err) {
-            //alert('user.get fail: ' + JSON.stringify(err));
-            this.loading = false;
-            this.$toast("登录失败");
+            //alert("user.get fail: " + JSON.stringify(err));
+            vm.loading = false;
+            vm.$toast("登录失败" + JSON.stringify(err));
           }
         });
       });
@@ -149,15 +157,16 @@ export default {
               this.$store.commit("login");
               this.$store.state.isLogin = true;
               this.$router.push("/Home");
+              //this.$toast("登录");
               //console.log(res.data)
             } else {
               //alert("用户名或密码错误请重新输入");
-              this.$toast("登录失败");
+              this.$toast("登录失败" + JSON.stringify(res));
               this.loading = false;
             }
           })
-          .catch(() => {
-            this.$toast("登录失败");
+          .catch((err) => {
+            this.$toast("登录1失败" + JSON.stringify(err));
             this.loading = false;
           });
       }

@@ -77,17 +77,17 @@ export default {
       this.axios({
         method: "post",
         url: "/js/a/ams/takeleave/takeLeave/findData",
-        params: {
+       /*  params: {
           "personnelFile.id": this.personid
-        }
+        } */
       })
         .then(res => {
-          console.log("postData:执行完毕");
+          //console.log("postData:执行完毕");
           console.log(res.data)
           this.leaveList = res.data.list
         })
         .catch(e => {
-          alert("获取信息失败");
+          this.$toast("user.get fail: " + JSON.stringify(e));
         });
     },
     getinfo() {
@@ -123,10 +123,11 @@ export default {
             //console.log(this.code);
             //console.log(this.record); */
           } else {
+            this.$toast("user.get fail: " + JSON.stringify(res));
           }
         })
         .catch(e => {
-          console.log("获取信息失败");
+          this.$toast("user.get fail: " + JSON.stringify(e));
         });
     }
   }

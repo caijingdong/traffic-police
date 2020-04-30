@@ -3,21 +3,16 @@
     <!--我的背景头像-->
     <div class="backbj">
       <img class="touxiang" src="./images/touxiang.png" alt />
-     <!--  <span v-if="$store.state.showname" @click="$router.push({ name: 'Login' })">admin</span> -->
+      <!--  <span v-if="$store.state.showname" @click="$router.push({ name: 'Login' })">admin</span> -->
       <span>{{lists.name}}</span>
     </div>
     <!--我的信息修改-->
-    <!--     <div class="person">
-      <img class="geren" src="./images/person.png" alt />
-      <span >个人信息</span>
-      <img class="jiantou" src="./images/arrow.png" alt />
-    </div>-->
+
     <div class="person" @click.prevent="logout">
       <img class="geren" src="./images/shezhi.png" alt />
       <span>退出登录</span>
       <img class="jiantou" src="./images/arrow.png" alt />
-       <loading v-if="loading" ref="loading"></loading>
-      
+      <loading v-if="loading" ref="loading"></loading>
     </div>
   </div>
 </template>
@@ -31,8 +26,7 @@ export default {
   data() {
     return {
       lists: "",
-      loading: false,
-      
+      loading: false
     };
   },
   components: {
@@ -49,9 +43,8 @@ export default {
         url: "/js/a/logout"
       })
         .then(res => {
-           this.loading = false;
+          this.loading = false;
           this.$router.push("/Login");
-
         })
         .catch(e => {
           alert("1");
@@ -64,31 +57,14 @@ export default {
       })
         .then(res => {
           if (res.data.code == "0000") {
-            //console.log("请求以后的标记");
             let doc = res.data.data;
             this.personid = doc.id;
-            // console.log(doc);
             this.lists = doc;
-            /*             this.office = this.lists.office;
-            //this.officename = this.office.officeName
-            this.info1 = doc.familyMembers;
-            this.record1 = doc.personnelRecords;
-            this.train1 = doc.trainingRecords;
-            this.dada = this.code.filter(item => {
-              if (this.lists.politicsStatusKey == item.dictValue) {
-                return item;
-              }
-            });
-            this.dada = this.dada[0].treeNames;
-            this.getEquepment(); */
-            //this.code = this.code
-            //console.log(this.code);
-            console.log(this.record1);
           } else {
           }
         })
         .catch(e => {
-          console.log("获取信息失败");
+         this.$toast("user.get fail: " + JSON.stringify(res));
         });
     }
   },

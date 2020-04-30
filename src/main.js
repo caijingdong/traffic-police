@@ -42,7 +42,7 @@ Vue.use(Button);
 //axios
 import axios from 'axios'
 // axios.defaults.baseURL = '/api'
-//axios.defaults.baseURL = 'http://192.168.1.110:8080' 
+//axios.defaults.baseURL = '' 
 axios.defaults.baseURL = 'http://192.168.1.7:8080'
 //Vue.axios.options.emulateJSON = true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
