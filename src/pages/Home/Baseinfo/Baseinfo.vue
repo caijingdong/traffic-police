@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-tabs
-      v-model="active"
+      v-model="allinfo"
       offset-top="0px"
       background="#3270e1"
       color="white"
@@ -10,8 +10,9 @@
       ref="resize"
       title-style="78px"
     >
+      <!-- 基本信息 -->
       <van-tab title="基本">
-        <van-tabs v-model="active1" color="#3270e1" sticky>
+        <van-tabs v-model="base" color="#3270e1" sticky>
           <van-tab class="list" title="基本">
             <li class="listxx">
               姓名
@@ -223,7 +224,7 @@
               <span>{{lists.hipline}}</span>
             </li>
           </van-tab>
-         <!--  <van-tab title="补充" class="list">
+          <!--  <van-tab title="补充" class="list">
             <li class="listxx">
               填报人
               <span>{{lists.informant}}</span>
@@ -236,76 +237,89 @@
               备注
               <span>{{lists.remarks}}</span>
             </li>
-          </van-tab> -->
+          </van-tab>-->
         </van-tabs>
       </van-tab>
-
-      <van-tab title="履历" >
+      <!-- 履历 -->
+      <van-tab title="履历">
         <!-- <div class="border" ></div> -->
         <div class="recoder">
-        <ul v-for="record in record1" class="list-record" :key="record.id">
-          <li class="listxx1 tebie" style="font-weight:bold；border-bottom:1px solid #e5e5e5">履历信息 收起</li>
-
-          <li class="listxx1">
-            开始时间
-            <span>{{record.startDate | ellipsis1}}</span>
-          </li>
-          <li class="listxx1">
-            结束时间
-            <span>{{record.endDate | ellipsis1}}</span>
-          </li>
-          <li class="listxx1">
-            在何地任何职
-            <span>{{record.takeOffice}}</span>
-          </li>
-          <li class="listxx1">
-            证明人
-            <span>{{record.certifier}}</span>
-          </li>
-          <li class="listxx1">
-            状态
-            <span>{{record.status}}</span>
-          </li>
-          <li class="listxx1">
-            更新时间
-            <span>{{record.updateDate | ellipsis1}}</span>
-          </li>
-          <!-- <div class="border" style="border:none"></div> -->
-        </ul>
+          <van-collapse v-model="activeNames">
+            <van-collapse-item
+              title="履历信息"
+              :name="record.id"
+              v-for="record in record1"
+              class="list-record"
+              :key="record.id"
+            >
+              <ul>
+                <!-- <li class="listxx1 tebie" style="font-weight:bold">装备详情</li> -->
+                <li class="listxx1">
+                  开始时间
+                  <span>{{record.startDate | ellipsis1}}</span>
+                </li>
+                <li class="listxx1">
+                  结束时间
+                  <span>{{record.endDate | ellipsis1}}</span>
+                </li>
+                <li class="listxx1">
+                  在何地任何职
+                  <span>{{record.takeOffice}}</span>
+                </li>
+                <li class="listxx1">
+                  证明人
+                  <span>{{record.certifier}}</span>
+                </li>
+                <li class="listxx1">
+                  状态
+                  <span>{{record.status}}</span>
+                </li>
+                <li class="listxx1">
+                  更新时间
+                  <span>{{record.updateDate | ellipsis1}}</span>
+                </li>
+              </ul>
+            </van-collapse-item>
+          </van-collapse>
         </div>
       </van-tab>
+      <!-- 装备 -->
       <van-tab title="装备" class="recoder">
-        <ul v-for="equipment in  equipments" class="list-record" :key="equipment.id">
-          <li class="listxx1 tebie" style="font-weight:bold">
-            装备详情
-           
-          </li>
-           <li class="listxx1" >
-            所属部门
-            <span>{{officename}}</span>
-          </li>
-          <li class="listxx1">
-            装备种类
-            <span>{{equipment.equipmentKind}}</span>
-          </li>
-          <li class="listxx1">
-            装备编号
-            <span>{{equipment.equipmentNumber}}</span>
-          </li>
-          <li class="listxx1" style="border:none">
-            装备状态
-            <span>{{equipment.equipmentStateKey}}</span>
-          </li>
-          
-        </ul>
+        <van-collapse v-model="activeNames">
+          <van-collapse-item
+            title="装备详情"
+            size="large"
+            :name="equipment.equipmentNumber"
+            v-for="equipment in  equipments"
+            class="list-record"
+            :key="equipment.id"
+          >
+            <ul>
+              <li class="listxx1">
+                所属部门
+                <span>{{officename}}</span>
+              </li>
+              <li class="listxx1">
+                装备种类
+                <span>{{equipment.equipmentKindValue}}</span>
+              </li>
+              <li class="listxx1">
+                装备编号
+                <span>{{equipment.equipmentNumber}}</span>
+              </li>
+              <li class="listxx1" style="border:none">
+                装备状态
+                <span>{{equipment.equipmentStateKey}}</span>
+              </li>
+            </ul>
+          </van-collapse-item>
+        </van-collapse>
       </van-tab>
+      <!-- 训练 -->
       <van-tab title="训练" class="recoder">
-        <ul v-for="train in train1" class="list-record" :key="train.id">
-          <li class="listxx1 tebie" style="font-weight:bold">
-           训练信息
-           
-          </li>
-          <li class="listxx1" >
+        <!-- <ul v-for="train in train1" class="list-record" :key="train.id">
+          <li class="listxx1 tebie" style="font-weight:bold">训练信息</li>
+          <li class="listxx1">
             项目
             <span>{{train.project}}</span>
           </li>
@@ -333,61 +347,112 @@
             更新时间
             <span>{{train.updateDate | ellipsis1}}</span>
           </li>
-          <li class="listxx1 " >
+          <li class="listxx1">
             备注信息
             <span>{{train.remarks}}</span>
-          
           </li>
-        </ul>
+        </ul>-->
+        <van-collapse v-model="activeNames">
+          <van-collapse-item
+            title="训练信息"
+            :name="train.id"
+            v-for="train in train1"
+            class="list-record"
+            :key="train.id"
+          >
+            <ul>
+              <!-- <li class="listxx1 tebie" style="font-weight:bold">装备详情</li> -->
+              <li class="listxx1">
+                项目
+                <span>{{train.project}}</span>
+              </li>
+              <li class="listxx1">
+                开始时间
+                <span>{{train.startTime}}</span>
+              </li>
+              <li class="listxx1">
+                时间长度
+                <span>{{train.timeSpan}}</span>
+              </li>
+              <li class="listxx1">
+                地点
+                <span>{{train.position}}</span>
+              </li>
+              <li class="listxx1">
+                组织单位
+                <span>{{train.organizationalUnit}}</span>
+              </li>
+              <li class="listxx1">
+                图片附件
+                <span>{{train.picture}}</span>
+              </li>
+              <li class="listxx1">
+                更新时间
+                <span>{{train.updateDate | ellipsis1}}</span>
+              </li>
+              <li class="listxx1">
+                备注信息
+                <span>{{train.remarks}}</span>
+              </li>
+            </ul>
+          </van-collapse-item>
+        </van-collapse>
       </van-tab>
+      <!-- 家庭 -->
       <van-tab title="家庭" class="recoder hh" style="height:1500px;">
-        <ul v-for="info in info1" class="list-record" :key="info.id">
-          <li class="listxx1 tebie" style="font-weight:bold">
-            家庭信息
-            
-          </li>
-          <li class="listxx1" >
-            姓名
-            <span>{{info.name}}</span>
-          </li>
-          <li class="listxx1">
-            关系
-            <span></span>
-          </li>
-          <li class="listxx1">
-            出生日期
-            <span>{{info.dateOfBirth | ellipsis1}}</span>
-          </li>
-          <li class="listxx1">
-            政治面貌
-            <span></span>
-          </li>
-          <li class="listxx1">
-            工作单位
-            <span></span>
-          </li>
-          <li class="listxx1">
-            职务
-            <span></span>
-          </li>
-          <li class="listxx1">
-            联系方式
-            <span>{{info.contactWay}}</span>
-          </li>
-          <li class="listxx1">
-            状态
-            <span>{{info.status}}</span>
-          </li>
-          <li class="listxx1">
-            更新时间
-            <span>{{info.updateDate | ellipsis1}}</span>
-          </li>
-          <li class="listxx1" >
-            备注信息
-            <span></span>
-          </li>
-          
-        </ul>
+        <van-collapse v-model="activeNames">
+          <van-collapse-item
+            title="家庭信息"
+            :name="info.id"
+            v-for="info in familyinfo"
+            class="list-record"
+            :key="info.id"
+          >
+            <ul>
+              <!-- <li class="listxx1 tebie" style="font-weight:bold">装备详情</li> -->
+              <li class="listxx1">
+                姓名
+                <span>{{info.name}}</span>
+              </li>
+              <li class="listxx1">
+                关系
+                <span></span>
+              </li>
+              <li class="listxx1">
+                出生日期
+                <span>{{info.dateOfBirth | ellipsis1}}</span>
+              </li>
+              <li class="listxx1">
+                政治面貌
+                <span></span>
+              </li>
+              <li class="listxx1">
+                工作单位
+                <span></span>
+              </li>
+              <li class="listxx1">
+                职务
+                <span></span>
+              </li>
+              <li class="listxx1">
+                联系方式
+                <span>{{info.contactWay}}</span>
+              </li>
+              <li class="listxx1">
+                状态
+                <span>{{info.status}}</span>
+              </li>
+              <li class="listxx1">
+                更新时间
+                <span>{{info.updateDate | ellipsis1}}</span>
+              </li>
+              <li class="listxx1">
+                备注信息
+                <span></span>
+              </li>
+            </ul>
+          </van-collapse-item>
+        </van-collapse>
       </van-tab>
     </van-tabs>
   </div>
@@ -399,11 +464,11 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      active: "",
-      active1: "",
+      allinfo: "",
+      base: "",
       active2: "123",
       info: {},
-      info1: "",
+      familyinfo: "",
       lists: {},
       record1: "",
       train1: "",
@@ -417,7 +482,10 @@ export default {
       equipments: {},
       personid: "",
       officename: "",
-      code1: {}
+      // code1: {},
+      activeNames: ["1"],
+      equipments1: "",
+      equiptype: ""
     };
   },
   methods: {
@@ -437,14 +505,11 @@ export default {
       })
         .then(res => {
           if (res.data.code == "0000") {
-            //console.log("请求以后的标记");
             let doc = res.data.data;
             this.personid = doc.id;
-             //console.log(doc);
             this.lists = doc;
             this.office = this.lists.office;
-            //this.officename = this.office.officeName
-            this.info1 = doc.familyMembers;
+            this.familyinfo = doc.familyMembers;
             this.record1 = doc.personnelRecords;
             this.train1 = doc.trainingRecords;
             this.dada = this.code.filter(item => {
@@ -453,7 +518,6 @@ export default {
               }
             });
             this.dada = this.dada[0].treeNames;
-            //console.log(this.record1);
           } else {
             this.$toast("user.get fail: " + JSON.stringify(res));
           }
@@ -465,32 +529,32 @@ export default {
     getEquepment() {
       this.axios({
         method: "get",
-        url: "/js/a/ams/equipment/equipment/viewData",
-      
+        url: "/js/a/ams/equipment/equipment/viewData"
       })
         .then(res => {
-          //console.log(res.data);
           this.equipments = res.data.list;
-          //console.log(this.equipments);
           this.office1 = this.equipments[0].office;
-
-          /*          this.equiptypes = this.equipments.forEach(value => {
-            arr.push(value.equipmentKind);
-          }); */
-
           this.officename = this.office1.officeName;
-          /*            let data1 = [];
-      this.equipments.forEach((item, index) => {
-        data1.push(item.type);
-      });
-      this.data = data1 */
-          this.equiptype = this.code1.filter(item => {
+          /*           this.equiptype = this.code1.filter(item => {
             if (this.equipments[0].equipmentKind == item.dictValue) {
               return item;
             }
           });
-          this.equiptype = this.equiptype[0].treeNames;
- 
+          for(let i of this.equipments){
+            for(let j of this.code1){
+              if(i.equipmentKind == j.dictValue){
+                return j.treeNames
+                
+              }
+            }
+  
+          }
+          this.equiptype = this.equiptype[0].treeNames; */
+
+          /*   if(equiptype){
+            this.equipments[0].push(equiptype)
+            console.log(this.equipments[0])
+          } */
         })
         .catch(e => {
           this.$toast("user.get fail: " + JSON.stringify(res));
@@ -517,11 +581,8 @@ export default {
         }
       })
         .then(res => {
-          //console.log(res.data);
-          //let code = res.data[2]
-
           this.code = res.data.data[2];
-          this.code1 = res.data.data[3];
+          //this.code1 = res.data.data[3];
           //console.log(this.code1);
         })
         .catch(err => {
@@ -533,7 +594,7 @@ export default {
     //this.getNewlist()
     this.getinfo();
     this.getValueobj();
-    this.getEquepment()
+    this.getEquepment();
   },
   mounted() {},
   filters: {
@@ -575,8 +636,8 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-body{
-  background-color:#ccc ;
+body {
+  background-color: #ccc;
 }
 ul,
 li {
@@ -591,8 +652,8 @@ li {
   width: 750px;
   height: 8px;
 }
-.hh{
-  height:1500px;
+.hh {
+  height: 1500px;
 }
 .list {
   width: 15rem;
@@ -614,7 +675,7 @@ li {
 }
 .recoder {
   background-color: #f5f5f5;
- height: 800px;
+  height: 800px;
 
   .list-record {
     margin: 10px;

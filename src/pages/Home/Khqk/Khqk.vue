@@ -97,7 +97,7 @@ export default {
           this.getmonth();
         })
         .catch(err => {
-           this.$toast("获取信息失败1" + JSON.stringify(err));
+           this.$toast("获取信息失败" + JSON.stringify(err));
         });
     },
     getview() {
@@ -130,7 +130,7 @@ export default {
           
         })
         .catch(e => {
-            this.$toast("获取失败12" + JSON.stringify(e));
+            this.$toast("获取失败" + JSON.stringify(e));
         });
     },
     getValueobj() {

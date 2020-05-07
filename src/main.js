@@ -39,6 +39,10 @@ Vue.use(Field);
 Vue.use(Cell).use(CellGroup);
 import { Button } from 'vant';
 Vue.use(Button);
+import { Collapse, CollapseItem } from 'vant';
+
+Vue.use(Collapse);
+Vue.use(CollapseItem);
 //axios
 import axios from 'axios'
 // axios.defaults.baseURL = '/api'

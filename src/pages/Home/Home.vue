@@ -112,7 +112,7 @@ export default {
   },
 
   created: function() {
-    this.getinfo();
+    //this.getinfo();
   }
 };
 </script>
