@@ -246,7 +246,7 @@
         <div class="recoder">
           <van-collapse v-model="activeNames">
             <van-collapse-item
-              title="履历信息"
+              :title="record.takeOffice"
               :name="record.id"
               v-for="record in record1"
               class="list-record"
@@ -270,10 +270,7 @@
                   证明人
                   <span>{{record.certifier}}</span>
                 </li>
-                <li class="listxx1">
-                  状态
-                  <span>{{record.status}}</span>
-                </li>
+                
                 <li class="listxx1">
                   更新时间
                   <span>{{record.updateDate | ellipsis1}}</span>
@@ -287,7 +284,7 @@
       <van-tab title="装备" class="recoder">
         <van-collapse v-model="activeNames">
           <van-collapse-item
-            title="装备详情"
+            :title="equipment.equipmentNumber"
             size="large"
             :name="equipment.equipmentNumber"
             v-for="equipment in  equipments"
@@ -317,45 +314,11 @@
       </van-tab>
       <!-- 训练 -->
       <van-tab title="训练" class="recoder">
-        <!-- <ul v-for="train in train1" class="list-record" :key="train.id">
-          <li class="listxx1 tebie" style="font-weight:bold">训练信息</li>
-          <li class="listxx1">
-            项目
-            <span>{{train.project}}</span>
-          </li>
-          <li class="listxx1">
-            开始时间
-            <span>{{train.startTime}}</span>
-          </li>
-          <li class="listxx1">
-            时间长度
-            <span>{{train.timeSpan}}</span>
-          </li>
-          <li class="listxx1">
-            地点
-            <span>{{train.position}}</span>
-          </li>
-          <li class="listxx1">
-            组织单位
-            <span>{{train.organizationalUnit}}</span>
-          </li>
-          <li class="listxx1">
-            图片附件
-            <span>{{train.picture}}</span>
-          </li>
-          <li class="listxx1">
-            更新时间
-            <span>{{train.updateDate | ellipsis1}}</span>
-          </li>
-          <li class="listxx1">
-            备注信息
-            <span>{{train.remarks}}</span>
-          </li>
-        </ul>-->
         <van-collapse v-model="activeNames">
           <van-collapse-item
-            title="训练信息"
+            :title="train.project"
             :name="train.id"
+            size="large"
             v-for="train in train1"
             class="list-record"
             :key="train.id"
@@ -402,8 +365,9 @@
       <van-tab title="家庭" class="recoder hh" style="height:1500px;">
         <van-collapse v-model="activeNames">
           <van-collapse-item
-            title="家庭信息"
+            :title="info.relationship"
             :name="info.id"
+            size="large"
             v-for="info in familyinfo"
             class="list-record"
             :key="info.id"
@@ -416,7 +380,7 @@
               </li>
               <li class="listxx1">
                 关系
-                <span></span>
+                <span>{{info.relationship}}</span>
               </li>
               <li class="listxx1">
                 出生日期
@@ -424,23 +388,19 @@
               </li>
               <li class="listxx1">
                 政治面貌
-                <span></span>
+                <span>{{info.politicsStatus}}</span>
               </li>
               <li class="listxx1">
                 工作单位
-                <span></span>
+                <span>{{info.jobEngineering}}</span>
               </li>
               <li class="listxx1">
                 职务
-                <span></span>
+                <span>{{info.duty}}</span>
               </li>
               <li class="listxx1">
                 联系方式
                 <span>{{info.contactWay}}</span>
-              </li>
-              <li class="listxx1">
-                状态
-                <span>{{info.status}}</span>
               </li>
               <li class="listxx1">
                 更新时间
@@ -510,6 +470,7 @@ export default {
             this.lists = doc;
             this.office = this.lists.office;
             this.familyinfo = doc.familyMembers;
+            console.log(this.familyinfo)
             this.record1 = doc.personnelRecords;
             this.train1 = doc.trainingRecords;
             this.dada = this.code.filter(item => {

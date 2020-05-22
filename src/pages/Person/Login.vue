@@ -1,11 +1,11 @@
 <template>
   <div class="content" ref="loginForm">
     <div class="logo">
-      欢迎使用交通管理局
+      欢迎使用辅警管理系统
       <div class="clearfix"></div>
     </div>
     <div class="smwz">
-      备注备注备注备注备注
+      温州市公安局交通管理局
       <div class="clearfix"></div>
     </div>
     <div class="longin-boder">
@@ -23,7 +23,7 @@
       钉钉免登
       <img class="jiantou" src="./images/jiantou.png" alt />
     </div>
-    <div class="zc">技术支持：温州市交通管理局</div>
+    <div class="zc">Powered By Jucher </div>
     <loading v-if="loading" ref="loading"></loading>
   </div>
 </template>
@@ -99,7 +99,7 @@ export default {
               .then(res => {
                 if (res.data.code == "0000") {
                   vm.loading = false;
-                  vm.$router.push("/Person");
+                  vm.$router.push("/Home");
                   vm.$toast("登录成功");
                   vm.$store.state.showname = false;
                 } else {
@@ -269,11 +269,14 @@ export default {
     }
   }
   .zc {
-    width: 14rem;
-    margin: 0 auto;
+    width: 100%;
     color: #999;
+    text-align: center;
     font-size: 0.6rem;
-    margin-top: 4.4rem;
+    position: absolute;
+    bottom:1.8rem;
+    
+    
   }
 }
 </style>

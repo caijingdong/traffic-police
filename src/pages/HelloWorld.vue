@@ -17,116 +17,10 @@
       />
     </van-cell-group>
 
-    <!--     <van-cell-group>
-      <van-field
-        required
-        clearable
-        label="请假类型"
-        :placeholder="colovalue"
-        input-align="right"
-        label-align="left"
-        label-width="84px"
-        disabled
-        size="large"
-        right-icon="arrow"
-        @click="showPicker = true"
-      />
-    </van-cell-group>
-    <van-popup v-model="showPicker" position="bottom">
-      <van-picker
-        show-toolbar
-        :columns="columns"
-        @cancel="showPicker = false"
-        @confirm="onConfirmtype"
-      />
-    </van-popup>-->
     <div
       style="font-size:0.4rem;text-align:left;height:1.2rem;;line-height:1.2rem;padding-left:0.4rem"
     >剩余时间：{{leaveYear}}天</div>
-    <!--   <van-cell title="选择单个日期" :value="startdate" @click="show = true" /> -->
 
-    <!--  <van-cell title="结束时间" :value="enddate" @click="show = true" /> -->
-
-    <!--     <van-cell-group style="margin-bottom:0.6rem;">
-      <van-field
-        label="开始时间"
-        :placeholder="startdate"
-        input-align="right"
-        label-align="left"
-        label-width="84px"
-        size="large"
-        right-icon="arrow"
-        disabled
-        required
-        @click="show1 = true"
-      />
-      <van-calendar v-model="show1" @confirm="onConfirm1" />
-      <van-field
-        label="结束时间"
-        :placeholder="enddate"
-        input-align="right"
-        label-align="left"
-        label-width="84px"
-        size="large"
-        right-icon="arrow"
-        disabled
-        required
-        @click="show = true"
-    />-->
-    <!--     <van-field
-      label="开始时间"
-      :placeholder="enddate"
-      is-link
-      :value-class="className"
-      :value="startTime"
-      input-align="right"
-      label-align="left"
-      label-width="84px"
-      size="large"
-      disabled
-      required
-      @click="showPopup1"
-    />
-    <van-popup v-model="show1" position="bottom">
-      <van-datetime-picker
-        v-model="currentDate1"
-        type="datetime"
-        title="选择时间"
-        :loading="isLoadingShow"
-        :min-date="minDate"
-        :max-date="maxDate"
-        :formatter="formatter1"
-        @cancel="show1 = false"
-        @confirm="confirmPicker1"
-      />
-    </van-popup>
-    <van-field
-      label="结束时间"
-      :placeholder="enddate"
-      is-link
-      :value-class="className"
-      :value="endTime"
-      input-align="right"
-      label-align="left"
-      label-width="84px"
-      size="large"
-      disabled
-      required
-      @click="showPopup"
-    />
-    <van-popup v-model="show" position="bottom">
-      <van-datetime-picker
-        v-model="currentDate"
-        type="datetime"
-        title="选择时间"
-        :loading="isLoadingShow"
-        :min-date="minDate";
-        :max-date="maxDate"
-        :formatter="formatter"
-        @cancel="show = false"
-        @confirm="confirmPicker"
-      />
-    </van-popup>-->
     <van-cell-group style="margin-bottom:0.6rem;">
       <van-field
         v-model="username"
@@ -193,7 +87,22 @@
         label-align="left"
         label-width="60px"
       />
-      <van-uploader style="float:left;margin-left:0.6rem;" v-model="fileList" multiple />
+      <!--  <van-uploader style="float:left;margin-left:0.6rem;" v-model="fileList"  /> -->
+       <van-uploader
+        style="float:left;margin-left:0.6rem;"
+        :multiple="true"
+        v-model="fileList"
+        :after-read="afterRead"
+        :max-count="countIndex"
+      />
+<!--       <van-uploader
+        style="float:left;margin-left:0.6rem;"
+        :multiple="true"
+        v-model="fileList"
+        :max-count="countIndex"
+        upload-text="上传文件"
+        :after-read="afterRead"
+      ></van-uploader> -->
     </van-cell-group>
 
     <div class="anniu" @click="postData">
@@ -238,7 +147,7 @@ export default {
       className: "",
       days: "",
       loading: false,
-
+      pictures: "",
       columns: [
         "年休假",
         "婚假",
@@ -258,7 +167,10 @@ export default {
       minDate: new Date(2020, 0, 1),
       maxDate: new Date(2025, 10, 1),
       currentDate: new Date(),
-      currentDate1: new Date()
+      currentDate1: new Date(),
+      imageData: [], // 准备保存的图片列表
+      countIndex: 9, // 可选图片剩余的数量
+      datas: {}
     };
   },
   computed: {
@@ -284,6 +196,68 @@ export default {
     }
   },
   methods: {
+    afterRead(file, detail) {
+      //console.log(file)
+      // 此时可以自行将文件上传至服务器
+      // 1.先判断是否是单个对象
+      // 2.否则就是数组，需要遍历进行转换，再上传（当然，如果你们接口支持同时传多个到服务器，就需要对后面的逻辑进行修改）
+      let formData = new FormData();
+      formData.append("leaveType", this.colovalue);
+      formData.append("startTime", this.startTime);
+      formData.append("endTime", this.endTime);
+      formData.append("reason", this.message);
+      formData.append("annualLeaveRemaining", this.leaveYear);
+      formData.append("leaveDays", this.days);
+      formData.append("file", file.file);
+      console.log(formData.get("file"));
+      this.datas = formData;
+/*       if (!Array.isArray(file)) {
+        this.uploadImgFun(file.content);
+      } else {
+        for (let i = 0; i < file.length; i++) {
+          if (this.imageData.length + i >= this.countIndex) {
+            Toast("最多上传9张图片");
+            break;
+          } else {
+            this.uploadImgFun(file[i].content);
+          }
+        }
+      } */
+    },
+    /* uploadImgFun(content) {
+      //console.log(content)
+      // 再做一次最大张数图片的判断，避免异步偷跑
+      if (this.imageData.length >= 9) {
+        Toast("最多上传9张图片");
+        return;
+      }
+      // 创建表单数据格式，以表单的数据传递，对该表单进行添加参数
+      let formData = new FormData();
+      formData.append("leaveType", this.colovalue);
+      formData.append("startTime", this.startTime);
+      formData.append("endTime", this.endTime);
+      formData.append("reason", this.message);
+      formData.append("annualLeaveRemaining", this.leaveYear);
+      formData.append("leaveDays", this.days);
+      formData.append("file", this.dataURLtoFile(content, "file.jpg"));
+      console.log(formData.get("file"));
+      this.datas = formData;
+      
+    }, */
+    // bae64转文件对象
+    dataURLtoFile(dataurl, filename) {
+      // 将base64转换为文件，dataurl为base64字符串，filename为文件名（必须带后缀名，如.jpg,.png）
+      var arr = dataurl.split(",");
+      var mime = arr[0].match(/:(.*?);/)[1];
+      var bstr = atob(arr[1]);
+      var n = bstr.length;
+      var u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    },
+
     getBusiness() {
       const that = this;
       dd.ready(function() {
@@ -339,112 +313,6 @@ export default {
         });
       });
     },
-
-    /*  showPopup() {
-      this.show = true;
-      this.isLoadingShow = true;
-      setTimeout(() => {
-        this.isLoadingShow = false;
-      }, 500);
-    }, */
-    // 确认选择的时间
-    /*     confirmPicker(val) {
-      let year = val.getFullYear();
-      let month = val.getMonth() + 1;
-      let day = val.getDate();
-      let hour = val.getHours();
-      let minute = val.getMinutes();
-      if (month >= 1 && month <= 9) {
-        month = `0${month}`;
-      }
-      if (day >= 1 && day <= 9) {
-        day = `0${day}`;
-      }
-      if (hour >= 0 && hour <= 9) {
-        hour = `0${hour}`;
-      }
-      if (minute >= 0 && minute <= 9) {
-        minute = `0${minute}`;
-      }
-      this.className = "timeClass";
-      this.endTime = `${year}-${month}-${day} ${hour}:${minute}`;
-      this.show = false;
-    },
-    // 选项格式化函数
-    formatter(type, value) {
-      if (type === "year") {
-        return `${value}年`;
-      } else if (type === "month") {
-        return `${value}月`;
-      } else if (type === "day") {
-        return `${value}日`;
-      } else if (type === "hour") {
-        return `${value}时`;
-      } else if (type === "minute") {
-        return `${value}分`;
-      } else if (type === "second") {
-        return `${value}秒`;
-      }
-      return value;
-    },
-    showPopup1() {
-      this.show1 = true;
-      this.isLoadingShow = true;
-      setTimeout(() => {
-        this.isLoadingShow = false;
-      }, 500);
-    },
-    // 确认选择的时间
-    confirmPicker1(val) {
-      let year = val.getFullYear();
-      let month = val.getMonth() + 1;
-      let day = val.getDate();
-      let hour = val.getHours();
-      let minute = val.getMinutes();
-      if (month >= 1 && month <= 9) {
-        month = `0${month}`;
-      }
-      if (day >= 1 && day <= 9) {
-        day = `0${day}`;
-      }
-      if (hour >= 0 && hour <= 9) {
-        hour = `0${hour}`;
-      }
-      if (minute >= 0 && minute <= 9) {
-        minute = `0${minute}`;
-      }
-      this.className = "timeClass";
-      this.startTime = `${year}-${month}-${day} ${hour}:${minute}`;
-      this.show1 = false;
-    },
-    // 选项格式化函数
-    formatter1(type, value) {
-      if (type === "year") {
-        return `${value}年`;
-      } else if (type === "month") {
-        return `${value}月`;
-      } else if (type === "day") {
-        return `${value}日`;
-      } else if (type === "hour") {
-        return `${value}时`;
-      } else if (type === "minute") {
-        return `${value}分`;
-      } else if (type === "second") {
-        return `${value}秒`;
-      }
-      return value1;
-    },
-    onConfirmtype(colovalue) {
-      //Toast(`当前值：${colovalue}, 当前索引：${index}`);
-      this.showPicker = false;
-      this.colovalue = this.format(colovalue);
-    },
-    format(colovalue) {
-      return `${colovalue}`;
-    },
-    onCancel() {
-      Toast("取消");
-    }, */
 
     getStarttime() {
       const that = this;
@@ -510,18 +378,21 @@ export default {
         alert("开始时间需要小于结束时间");
       } else {
         this.loading = true;
+        //this.uploadImgFun();
         this.axios({
           method: "post",
           url: "/js/a/ams/takeleave/takeLeave/saveLeave",
-          params: {
+          data: this.datas
+          /*           params: {
             leaveType: this.colovalue,
             startTime: this.startTime,
             endTime: this.endTime,
             reason: this.message,
             annualLeaveRemaining: this.leaveYear,
             annualLeaveTotal: this.hdYear,
-            leaveDays: this.days
-          }
+            leaveDays: this.days,
+           // datas:this.datas
+          }  */
         })
           .then(res => {
             if (res.status == 200) {
