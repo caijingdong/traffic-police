@@ -21,7 +21,7 @@
            <!--  <ul v-for="assess in assess1" :key="assess.id"> -->
               <li class="listxx border">
                 机构名称
-                <span>{{office.officeName}}</span>
+                <span>{{assess.officeName}}</span>
               </li>
               <li class="listxx">
                 年份
@@ -104,12 +104,12 @@ export default {
       //console.log(this.lists, "getView-Method");
       this.axios({
         method: "get",
-        url: "/js/a/ams/assessmentresult/assessmentResult/viewData",
+        url: "/js/a/ams/assessmentresult/assessmentResult/mobileData ",
       })
         .then(res => {
         if (res.status == 200) {
-          
-           this.assess1 = res.data.list;
+          console.log(res.data)
+           this.assess1 = res.data.data;
            
           /* let doc = res.data.list[0];
           this.office = doc.office; */
@@ -130,7 +130,7 @@ export default {
           
         })
         .catch(e => {
-            this.$toast("获取失败" + JSON.stringify(e));
+           // this.$toast("获取失败" + JSON.stringify(e));
         });
     },
     getValueobj() {

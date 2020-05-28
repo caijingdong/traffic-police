@@ -48,67 +48,7 @@ export default {
     openPicker() {
       this.$refs.picker.open();
     },
-    getinfo() {
-      /*  let arr4 = [
-        {
-          step: "1",
-          type: { idd: "11", adsa: "22323" },
-          user_id: "2",
-          user_name: "马敏",
-          state: "2"
-        },
-        {
-          step: "1",
-           type: { idd: "11", adsa: "22323" },
-          user_id: "3",
-          user_name: "杜强",
-          state: "1"
-        }
-      ];
-      let data1 = [];
-      arr4.forEach((item, index) => {
-        data1.push(item);
-      });
-      this.data = data1
-      console.log(this.data) */
-      var obj1 = {
-        2: "尺寸",
-        3: "颜色"
-      };
-      var spec_value = {
-        2: {
-          1: "礼盒装",
-          6: "180g"
-        },
-        3: {
-          2: "红色",
-          4: "黑色"
-        }
-      };
-      /* 	console.log(obj1);
-	console.log(spec_value); */
-      var arr = []; //创建一个空数组存放循环出来的对象
-      var index = 0;
-      /* 	for(var k in obj1) {
-		var obj = {};
-		obj.name = obj1[k];
-		obj.id = k;
-		obj.child = [];
-		arr.push(obj)
-		console.log(k);//打印出 2、3 此处的k代表的是属性
  
-	} */
-      for (var j in spec_value) {
-        for (var m in spec_value[j]) {
-          var objC = {};
-          objC.name = spec_value[j][m];
-          //objC.id = m;
-          arr.push(objC);
-        }
-      }
-
-      console.log(arr);
-    }
   },
 
   created: function() {

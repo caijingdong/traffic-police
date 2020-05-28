@@ -82,8 +82,8 @@ export default {
       vm.loading = true;
       dd.ready(function() {
         dd.runtime.permission.requestAuthCode({
-          //corpId: "dingb66de550406f10f435c2f4657eb6378f",
-          corpId: "ding3b87191431b1e7eb35c2f4657eb6378f",
+          corpId: "dingb66de550406f10f435c2f4657eb6378f",
+          //corpId: "ding3b87191431b1e7eb35c2f4657eb6378f",测试
           //ding3b87191431b1e7eb35c2f4657eb6378f
           onSuccess: function(info) {
             // 如果返回 Success
@@ -133,9 +133,9 @@ export default {
       /*       if (this.username === "" || this.password === "") {
         //alert("账号或密码不能为空");
       } */
-      if (this.username === "" || this.password === "") {
+      if (this.username === "" || this.password === ""){
         this.$toast("密码输入错误");
-      } else {
+      }else {
         var secretKey = "thinkgem,jeesite,com";
         var username = DesUtils.encode(this.username, secretKey);
         var password = DesUtils.encode(this.password, secretKey);

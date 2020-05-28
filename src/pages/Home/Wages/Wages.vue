@@ -17,7 +17,7 @@
             class="list"
             :name="item.c"
             v-for="(item,indexs) in doc"
-            :title="item.officeMonthlySalary.month + '月'"
+            :title="item.month + '月'"
             :key="indexs"
           >
             <li class="listxx">
@@ -108,13 +108,13 @@ export default {
     getinfo() {
       this.axios({
         method: "get",
-        url: "/js/a/ams/personnelfile/personnelFile/getCurrentUserPersonnelFile"
+        url: "/js/a/ams/salary/personnel/personnelMonthlySalary/mobileData"
       })
         .then(res => {
           if (res.data.code == "0000") {
-            let doc = res.data.data.personnelMonthlySalaries;            
-            this.doc =  doc;   
-            console.log(this.doc)         
+            let doc = res.data.data;            
+           this.doc =  doc;   
+            console.log(res.data.data)         
           } else {
             this.$toast("user.get fail: " + JSON.stringify(res));
           }

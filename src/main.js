@@ -20,11 +20,8 @@ import { RadioGroup, Radio } from 'vant';
 import { Picker } from 'vant';
 import { Popup } from 'vant';
 import { Toast } from 'vant';
-
 Vue.use(Toast);
-
 Vue.use(Popup);
-
 Vue.use(Picker);
 Vue.use(Radio);
 Vue.use(RadioGroup);
@@ -47,7 +44,7 @@ Vue.use(CollapseItem);
 import axios from 'axios'
 // axios.defaults.baseURL = '/api'
 //axios.defaults.baseURL = '' 
-axios.defaults.baseURL = 'http://192.168.1.249:8080'
+axios.defaults.baseURL = 'http://192.168.1.8:8080'
 //Vue.axios.options.emulateJSON = true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.defaults.withCredentials = true //让ajax携带cookie

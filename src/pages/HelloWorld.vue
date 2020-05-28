@@ -54,6 +54,7 @@
     <van-cell-group>
       <van-field
         v-model="days"
+        type="number"
         label="时长(天)"
         placeholder="请输入请假天数"
         input-align="right"
@@ -63,7 +64,6 @@
         required
       />
     </van-cell-group>
-    <!--  <div class="list-text">{{dateLong}}</div> -->
     <van-cell-group>
       <van-field label="请假事由" label-align="left" label-width="84px" disabled required size="large" />
       <van-field
@@ -87,22 +87,22 @@
         label-align="left"
         label-width="60px"
       />
-      <!--  <van-uploader style="float:left;margin-left:0.6rem;" v-model="fileList"  /> -->
-       <van-uploader
+
+      <van-uploader
         style="float:left;margin-left:0.6rem;"
         :multiple="true"
         v-model="fileList"
         :after-read="afterRead"
         :max-count="countIndex"
       />
-<!--       <van-uploader
+      <!--       <van-uploader
         style="float:left;margin-left:0.6rem;"
         :multiple="true"
         v-model="fileList"
         :max-count="countIndex"
         upload-text="上传文件"
         :after-read="afterRead"
-      ></van-uploader> -->
+      ></van-uploader>-->
     </van-cell-group>
 
     <div class="anniu" @click="postData">
@@ -114,6 +114,7 @@
 
 <script>
 import * as dd from "dingtalk-jsapi";
+import axios from "axios";
 import { Toast } from "vant";
 import { formatDate } from "./Home/js/format.js";
 import loading from "../components/loading/Loading.vue";
@@ -124,6 +125,16 @@ export default {
   },
   data() {
     return {
+      formData: {
+        leaveType: null,
+        startTime: null,
+        endTime: null,
+        reason: [],
+        annualLeaveRemaining: null,
+        leaveDays: null,
+        file: null
+      },
+      config:"",
       isLoadingShow: true,
       password: "",
       hdYear: "",
@@ -201,61 +212,43 @@ export default {
       // 此时可以自行将文件上传至服务器
       // 1.先判断是否是单个对象
       // 2.否则就是数组，需要遍历进行转换，再上传（当然，如果你们接口支持同时传多个到服务器，就需要对后面的逻辑进行修改）
-      let formData = new FormData();
-      formData.append("leaveType", this.colovalue);
-      formData.append("startTime", this.startTime);
-      formData.append("endTime", this.endTime);
-      formData.append("reason", this.message);
-      formData.append("annualLeaveRemaining", this.leaveYear);
-      formData.append("leaveDays", this.days);
-      formData.append("file", file.file);
-      console.log(formData.get("file"));
-      this.datas = formData;
-/*       if (!Array.isArray(file)) {
-        this.uploadImgFun(file.content);
-      } else {
-        for (let i = 0; i < file.length; i++) {
-          if (this.imageData.length + i >= this.countIndex) {
-            Toast("最多上传9张图片");
-            break;
-          } else {
-            this.uploadImgFun(file[i].content);
-          }
+
+      let tableParams = {
+        leaveType: this.colovalue,
+        startTime: this.startTime,
+        endTime: this.endTime,
+        reason: this.message,
+        annualLeaveRemaining: this.leaveYear,
+        annualLeaveTotal: this.hdYear,
+        leaveDays: this.days
+      };
+      let config = null;
+      let datas = null;
+      //处理文件上传的参数
+      if (file !== null) {
+        //auth_user_file如果上传文件了，就不手动输入名单了
+        let formData = new FormData();
+        formData.append("leaveType", this.colovalue);
+        formData.append("startTime", this.startTime);
+        formData.append("endTime", this.endTime);
+        formData.append("reason", this.message);
+        formData.append("annualLeaveRemaining", this.leaveYear);
+        formData.append("leaveDays", this.days);
+        formData.append("file", file.file);
+        console.log(formData.get("file"));
+        this.datas = formData;
+        config = {
+          headers: {'Content-Type':'multipart/form-data'}
         }
-      } */
-    },
-    /* uploadImgFun(content) {
-      //console.log(content)
-      // 再做一次最大张数图片的判断，避免异步偷跑
-      if (this.imageData.length >= 9) {
-        Toast("最多上传9张图片");
-        return;
+         this.config = config
+      } else {
+        this.datas = tableParams;
+        this.datas = Qs.stringify(datas);
+         config = {
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        } //处理参数
+        this.config = config
       }
-      // 创建表单数据格式，以表单的数据传递，对该表单进行添加参数
-      let formData = new FormData();
-      formData.append("leaveType", this.colovalue);
-      formData.append("startTime", this.startTime);
-      formData.append("endTime", this.endTime);
-      formData.append("reason", this.message);
-      formData.append("annualLeaveRemaining", this.leaveYear);
-      formData.append("leaveDays", this.days);
-      formData.append("file", this.dataURLtoFile(content, "file.jpg"));
-      console.log(formData.get("file"));
-      this.datas = formData;
-      
-    }, */
-    // bae64转文件对象
-    dataURLtoFile(dataurl, filename) {
-      // 将base64转换为文件，dataurl为base64字符串，filename为文件名（必须带后缀名，如.jpg,.png）
-      var arr = dataurl.split(",");
-      var mime = arr[0].match(/:(.*?);/)[1];
-      var bstr = atob(arr[1]);
-      var n = bstr.length;
-      var u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      return new File([u8arr], filename, { type: mime });
     },
 
     getBusiness() {
@@ -366,6 +359,7 @@ export default {
         });
       });
     },
+   
     postData() {
       var c = this.days;
       var d = this.message;
@@ -378,34 +372,26 @@ export default {
         alert("开始时间需要小于结束时间");
       } else {
         this.loading = true;
-        //this.uploadImgFun();
         this.axios({
           method: "post",
           url: "/js/a/ams/takeleave/takeLeave/saveLeave",
-          data: this.datas
-          /*           params: {
-            leaveType: this.colovalue,
-            startTime: this.startTime,
-            endTime: this.endTime,
-            reason: this.message,
-            annualLeaveRemaining: this.leaveYear,
-            annualLeaveTotal: this.hdYear,
-            leaveDays: this.days,
-           // datas:this.datas
-          }  */
+          data: this.datas,
+          // config:this.config
         })
           .then(res => {
+            console.log('sucess', res);
+            this.loading = false;
             if (res.status == 200) {
-              this.loading = false;
               this.$toast("提交成功");
               this.$router.push({ name: "list" });
             } else {
               this.$toast("请假失败" + JSON.stringify(res.message));
-              this.loading = false;
+              // console.log("请假失败" + JSON.stringify(res.message))
             }
           })
           .catch(e => {
             this.$toast("请假失败" + JSON.stringify(e));
+            console.log("error", e)
           });
       }
     },
