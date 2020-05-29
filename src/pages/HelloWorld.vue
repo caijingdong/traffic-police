@@ -78,7 +78,7 @@
         style="margin-bottom:0.6rem"
       />
     </van-cell-group>
-    <van-cell-group style="height:140px;">
+    <van-cell-group>
       <van-field
         v-model="password"
         label="附件"
@@ -89,7 +89,7 @@
       />
 
       <van-uploader
-        style="float:left;margin-left:0.6rem;"
+        style="width: 100%;margin-left:0.6rem;"
         :multiple="true"
         v-model="fileList"
         :after-read="afterRead"
@@ -181,7 +181,9 @@ export default {
       currentDate1: new Date(),
       imageData: [], // 准备保存的图片列表
       countIndex: 9, // 可选图片剩余的数量
-      datas: {}
+      datas: {},
+      files: [],
+      params:""
     };
   },
   computed: {
@@ -208,11 +210,13 @@ export default {
   },
   methods: {
     afterRead(file, detail) {
-      //console.log(file)
       // 此时可以自行将文件上传至服务器
       // 1.先判断是否是单个对象
       // 2.否则就是数组，需要遍历进行转换，再上传（当然，如果你们接口支持同时传多个到服务器，就需要对后面的逻辑进行修改）
-
+      const { files } = this;
+      files.concat(file);
+      const arr = [].concat(files, file);
+      this.files = arr;
       let tableParams = {
         leaveType: this.colovalue,
         startTime: this.startTime,
@@ -234,9 +238,16 @@ export default {
         formData.append("reason", this.message);
         formData.append("annualLeaveRemaining", this.leaveYear);
         formData.append("leaveDays", this.days);
-        formData.append("file", file.file);
+        console.log("sdfsdfsdfsd");
+        console.log(formData);
+        for (const item of arr) {
+          formData.append("file", item.file)
+        }
+        // formData.append(formdata);
+        console.log(formData.get("leaveType"));
         console.log(formData.get("file"));
         this.datas = formData;
+        console.log("datas:"+this.datas);
         config = {
           headers: {'Content-Type':'multipart/form-data'}
         }
@@ -365,17 +376,50 @@ export default {
       var d = this.message;
       var e = this.colovalue;
       var a = new Date(this.endTime).getTime();
-      var b = new Date(this.startTime).getTime();
+      var b = new Date(this.startTime).getTime();   
+      let formData = new FormData();
+        formData.append("leaveType", this.colovalue);
+        formData.append("startTime", this.startTime);
+        formData.append("endTime", this.endTime);
+        formData.append("reason", this.message);
+        formData.append("annualLeaveRemaining", this.leaveYear);
+        formData.append("leaveDays", this.days);
+        this.params = formData;
+      console.log("111111");
       if (d === "" || c === "" || a === "" || b === "" || e === "") {
         alert("必填项不能为空");
       } else if (a < b) {
         alert("开始时间需要小于结束时间");
-      } else {
-        this.loading = true;
+      } else if(this.files.length == 0){
         this.axios({
           method: "post",
           url: "/js/a/ams/takeleave/takeLeave/saveLeave",
-          data: this.datas,
+         data:this.params
+          // config:this.config
+        })
+          .then(res => {
+            console.log('sucess', res);
+            this.loading = false;
+            if (res.status == 200) {
+              this.$toast("提交成功");
+              this.$router.push({ name: "list" });
+            } else {
+              this.$toast("请假失败" + JSON.stringify(res.message));
+              // console.log("请假失败" + JSON.stringify(res.message))
+            }
+          })
+          .catch(e => {
+            this.$toast("请假失败" + JSON.stringify(e));
+            console.log("error", e)
+          });
+
+      }else {
+        this.loading = true;
+        console.log("22222");
+        this.axios({
+          method: "post",
+          url: "/js/a/ams/takeleave/takeLeave/saveLeave",
+         data:this.datas
           // config:this.config
         })
           .then(res => {
@@ -422,6 +466,9 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.hello {
+  margin-bottom: 100px;
+}
 .anniu {
   width: 14rem;
   border-radius: 8px;

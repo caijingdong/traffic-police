@@ -161,12 +161,13 @@ export default {
               //console.log(res.data)
             } else {
               //alert("用户名或密码错误请重新输入");
-              this.$toast("登录失败" + JSON.stringify(res));
+              this.$toast("账号密码错误" );
               this.loading = false;
             }
           })
           .catch((err) => {
-            this.$toast("登录1失败" + JSON.stringify(err));
+            this.$toast("账号密码错误");
+            console.log("error" + JSON.stringify(err))
             this.loading = false;
           });
       }
