@@ -224,7 +224,8 @@ export default {
         reason: this.message,
         annualLeaveRemaining: this.leaveYear,
         annualLeaveTotal: this.hdYear,
-        leaveDays: this.days
+        leaveDays: this.days,
+        haYear:this.hdYear
       };
       let config = null;
       let datas = null;
@@ -238,6 +239,7 @@ export default {
         formData.append("reason", this.message);
         formData.append("annualLeaveRemaining", this.leaveYear);
         formData.append("leaveDays", this.days);
+        formData.append("hdYear", this.hdYear);
         console.log("sdfsdfsdfsd");
         console.log(formData);
         for (const item of arr) {
@@ -384,8 +386,10 @@ export default {
         formData.append("reason", this.message);
         formData.append("annualLeaveRemaining", this.leaveYear);
         formData.append("leaveDays", this.days);
+        formData.append("hdYear", this.hdYear);
         this.params = formData;
       console.log("111111");
+       console.log(formData.get("hdYear"));
       if (d === "" || c === "" || a === "" || b === "" || e === "") {
         alert("必填项不能为空");
       } else if (a < b) {

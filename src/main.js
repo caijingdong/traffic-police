@@ -43,8 +43,8 @@ Vue.use(CollapseItem);
 //axios
 import axios from 'axios'
 // axios.defaults.baseURL = '/api'
-axios.defaults.baseURL = '' 
-//axios.defaults.baseURL = 'http://192.168.1.8:8080'
+//axios.defaults.baseURL = '' 
+axios.defaults.baseURL = 'http://192.168.1.8:8080'
 //Vue.axios.options.emulateJSON = true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.defaults.withCredentials = true //让ajax携带cookie
