@@ -1,6 +1,6 @@
 <template>
   <div class="bottom">
-    <div class="item" @click="clickItem('/Leave/HelloWorld')" :class="{active: $route.path==='/Leave/HelloWorld'}">
+    <div class="item" @click="clickItem('/Leave/Applyleave')" :class="{active: $route.path==='/Leave/Applyleave'}">
       <i style="font-size:1.1rem;" class="iconfont icon-qingjia1"></i>
       <p>请假</p>
     </div>

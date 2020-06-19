@@ -24,8 +24,8 @@
               <span class="ls">{{item.endTime}}</span>
             </div>
             <div class="info">
-              <p v-if="item.status == 4" class="success">待审核</p>
-              <p v-if="item.status == 0"  class="waited">通过</p>              
+              <p v-if="item.status == 4" class="waited">待审核</p>
+              <p v-if="item.status == 0" class="success">通过</p>              
               <p v-if="item.status == 5" class="closed">驳回</p>
             </div>
           </div>

@@ -496,26 +496,7 @@ export default {
           this.equipments = res.data.list;
           this.office1 = this.equipments[0].office;
           this.officename = this.office1.officeName;
-          /*           this.equiptype = this.code1.filter(item => {
-            if (this.equipments[0].equipmentKind == item.dictValue) {
-              return item;
-            }
-          });
-          for(let i of this.equipments){
-            for(let j of this.code1){
-              if(i.equipmentKind == j.dictValue){
-                return j.treeNames
-                
-              }
-            }
-  
-          }
-          this.equiptype = this.equiptype[0].treeNames; */
-
-          /*   if(equiptype){
-            this.equipments[0].push(equiptype)
-            console.log(this.equipments[0])
-          } */
+          
         })
         .catch(e => {
           this.$toast("user.get fail: " + JSON.stringify(res));

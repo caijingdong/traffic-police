@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import vConsole from 'vconsole'
+import './vant/index';
 const isDev = process.env.NODE_ENV === 'development';
 if (isDev) {
   Vue.use(new vConsole());
@@ -37,14 +38,11 @@ Vue.use(Cell).use(CellGroup);
 import { Button } from 'vant';
 Vue.use(Button);
 import { Collapse, CollapseItem } from 'vant';
-
 Vue.use(Collapse);
 Vue.use(CollapseItem);
-//axios
 import axios from 'axios'
-// axios.defaults.baseURL = '/api'
 //axios.defaults.baseURL = '' 
-axios.defaults.baseURL = 'http://192.168.1.8:8080'
+axios.defaults.baseURL = 'http://192.168.1.28:8080'
 //Vue.axios.options.emulateJSON = true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.defaults.withCredentials = true //让ajax携带cookie

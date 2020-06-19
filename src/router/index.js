@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/pages/HelloWorld'
+import Applyleave from '@/pages/Applyleave'
 import list from '@/pages/list'
 import Home from '@/pages/Home/Home'
 import Person from '@/pages/Person/Person'
@@ -87,9 +87,9 @@ export default new Router({
       component: Leave,
       name: 'Leave',
       children: [{
-        path: 'HelloWorld',
-        component:HelloWorld,
-        name: 'HelloWorld',
+        path: 'Applyleave',
+        component:Applyleave,
+        name: 'Applyleave',
         meta:{
           index:0,
           showFooter1:true

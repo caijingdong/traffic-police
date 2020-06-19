@@ -14,19 +14,19 @@
       <div class="service">个人业务</div>
       <ul class="business">
         <li class="business_li" @click="$router.push({ name: 'Baseinfo' })">
-          <img style="display:block;" src="./assets/jbxx.png" alt />
+          <img style="display:block;" src="./assets/icon_1.png" alt />
         </li>
         <li class="business_li" @click="$router.push({ name: 'Wages' })">
-          <img style="display:block;" src="./assets/gzmx.png" alt />
+          <img style="display:block;" src="./assets/icon_2.png" alt />
         </li>
         <!--  <li class="business_li" @click="$router.push({ name: 'Qingwu' })">
           <img style="display:block;" src="./assets/qwap.png" alt />
         </li>-->
         <li class="business_li" @click="$router.push({ name: 'HelloWorld' })">
-          <img style="display:block;" src="./assets/qxjgl.png" alt />
+          <img style="display:block;" src="./assets/icon_4.png" alt />
         </li>
         <li class="business_li" @click="$router.push({ name: 'Khqk' })">
-          <img style="display:block;" src="./assets/khqk.png" alt />
+          <img style="display:block;" src="./assets/icon_3.png" alt />
         </li>
       </ul>
     </div>

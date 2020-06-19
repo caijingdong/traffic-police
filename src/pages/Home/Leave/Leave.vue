@@ -1,12 +1,12 @@
 <template>
-  <div class="hello">
+  <div class="leave">
     <router-view></router-view>
     <LeaveGuider v-show="$route.meta.showFooter1" />
   </div>
 </template>
 <script>
 import LeaveGuider from "@/components/FooterGuider/LeaveGuider.vue";
-import HelloWorld from "@/pages/HelloWorld.vue";
+import Applyleave from "@/pages/Applyleave.vue";
 export default {
   name: "bottom",
   data() {
@@ -36,11 +36,11 @@ export default {
   bottom: 0px;
   border-top: 1px solid #f5f5f5;
   background-color: #fff;
-  width: 100%;
+  width: 14rem;
   height: 60px;
 }
 .item {
-  margin: 5px 20%;
+  margin: 5px 20px;
   float: left;
 }
 .item p {

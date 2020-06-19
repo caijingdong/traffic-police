@@ -89,20 +89,12 @@
       />
 
       <van-uploader
-        style="width: 100%;margin-left:0.6rem;"
+        style="float:left;margin-left:0.6rem;"
         :multiple="true"
         v-model="fileList"
         :after-read="afterRead"
         :max-count="countIndex"
       />
-      <!--       <van-uploader
-        style="float:left;margin-left:0.6rem;"
-        :multiple="true"
-        v-model="fileList"
-        :max-count="countIndex"
-        upload-text="上传文件"
-        :after-read="afterRead"
-      ></van-uploader>-->
     </van-cell-group>
 
     <div class="anniu" @click="postData">
@@ -119,7 +111,7 @@ import { Toast } from "vant";
 import { formatDate } from "./Home/js/format.js";
 import loading from "../components/loading/Loading.vue";
 export default {
-  name: "HelloWorld",
+  name: "Applyleave",
   components: {
     loading
   },
@@ -134,7 +126,7 @@ export default {
         leaveDays: null,
         file: null
       },
-      config:"",
+      config: "",
       isLoadingShow: true,
       password: "",
       hdYear: "",
@@ -183,7 +175,7 @@ export default {
       countIndex: 9, // 可选图片剩余的数量
       datas: {},
       files: [],
-      params:""
+      params: ""
     };
   },
   computed: {
@@ -225,7 +217,7 @@ export default {
         annualLeaveRemaining: this.leaveYear,
         annualLeaveTotal: this.hdYear,
         leaveDays: this.days,
-        haYear:this.hdYear
+        haYear: this.hdYear
       };
       let config = null;
       let datas = null;
@@ -243,24 +235,24 @@ export default {
         console.log("sdfsdfsdfsd");
         console.log(formData);
         for (const item of arr) {
-          formData.append("file", item.file)
+          formData.append("file", item.file);
         }
         // formData.append(formdata);
         console.log(formData.get("leaveType"));
         console.log(formData.get("file"));
         this.datas = formData;
-        console.log("datas:"+this.datas);
+        console.log("datas:" + this.datas);
         config = {
-          headers: {'Content-Type':'multipart/form-data'}
-        }
-         this.config = config
+          headers: { "Content-Type": "multipart/form-data" }
+        };
+        this.config = config;
       } else {
         this.datas = tableParams;
         this.datas = Qs.stringify(datas);
-         config = {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        } //处理参数
-        this.config = config
+        config = {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        }; //处理参数
+        this.config = config;
       }
     },
 
@@ -322,10 +314,22 @@ export default {
 
     getStarttime() {
       const that = this;
+      var aData = new Date();
+      console.log(aData); //Wed Aug 21 2019 10:00:58 GMT+0800 (中国标准时间)
+      var value1 =
+        aData.getFullYear() +
+        "-" +
+        (aData.getMonth() + 1) +
+        "-" +
+        aData.getDate() +
+        " " +
+        aData.getHours() +
+        ":" +
+        aData.getMinutes();
       dd.ready(function() {
         dd.biz.util.datetimepicker({
           format: "yyyy-MM-dd HH:mm",
-          value: "2020-4-20 08:00",
+          value: value1 ,
           //默认显示
           onSuccess: function(result) {
             that.startTime = result.value;
@@ -337,11 +341,22 @@ export default {
     },
     getEndtime() {
       const that = this;
-      console.log(1);
+      var aData = new Date();
+
+      var value2 =
+        aData.getFullYear() +
+        "-" +
+        (aData.getMonth() + 1) +
+        "-" +
+        aData.getDate() +
+        " " +
+        aData.getHours() +
+        ":" +
+        aData.getMinutes();
       dd.ready(function() {
         dd.biz.util.datetimepicker({
           format: "yyyy-MM-dd HH:mm",
-          value: "2020-04-20 08:00", //默认显示
+          value: value2, //默认显示
           onSuccess: function(result) {
             //onSuccess将在点击完成之后回调
             //alert(JSON.stringify(result))
@@ -372,37 +387,50 @@ export default {
         });
       });
     },
-   
+
     postData() {
+      var a = new Date(this.endTime).getTime();
+      var b = new Date(this.startTime).getTime();
+
+      var h = this.startTime;
+      var f = this.endTime;
+      console.log(a);
       var c = this.days;
       var d = this.message;
       var e = this.colovalue;
-      var a = new Date(this.endTime).getTime();
-      var b = new Date(this.startTime).getTime();   
       let formData = new FormData();
-        formData.append("leaveType", this.colovalue);
-        formData.append("startTime", this.startTime);
-        formData.append("endTime", this.endTime);
-        formData.append("reason", this.message);
-        formData.append("annualLeaveRemaining", this.leaveYear);
-        formData.append("leaveDays", this.days);
-        formData.append("hdYear", this.hdYear);
-        this.params = formData;
-      console.log("111111");
-       console.log(formData.get("hdYear"));
-      if (d === "" || c === "" || a === "" || b === "" || e === "") {
+      formData.append("leaveType", this.colovalue);
+      formData.append("startTime", this.startTime);
+      formData.append("endTime", this.endTime);
+      formData.append("reason", this.message);
+      formData.append("annualLeaveRemaining", this.leaveYear);
+      formData.append("leaveDays", this.days);
+      formData.append("hdYear", this.hdYear);
+      this.params = formData;
+      /*  if (d === "" || c === "" || a === "" || b === "" || e === "") {
         alert("必填项不能为空");
+      } else */
+
+      if (e === "") {
+        this.$toast("请假类型不能为空");
+      } else if (h === "请选择时间" || f === "请选择时间") {
+        this.$toast("请选择开始时间或结束时间");
+      } else if (c === "") {
+        this.$toast("请假天数不能为空");
+      } else if (d === "") {
+        this.$toast("请假事由不能为空");
+        console.log(1);
       } else if (a < b) {
-        alert("开始时间需要小于结束时间");
-      } else if(this.files.length == 0){
+        this.$toast("开始时间需要小于结束时间");
+      } else if (this.files.length == 0) {
         this.axios({
           method: "post",
           url: "/js/a/ams/takeleave/takeLeave/saveLeave",
-         data:this.params
+          data: this.params
           // config:this.config
         })
           .then(res => {
-            console.log('sucess', res);
+            console.log("sucess", res);
             this.loading = false;
             if (res.status == 200) {
               this.$toast("提交成功");
@@ -414,20 +442,19 @@ export default {
           })
           .catch(e => {
             this.$toast("请假失败" + JSON.stringify(e));
-            console.log("error", e)
+            console.log("error", e);
           });
-
-      }else {
+      } else {
         this.loading = true;
         console.log("22222");
         this.axios({
           method: "post",
           url: "/js/a/ams/takeleave/takeLeave/saveLeave",
-         data:this.datas
+          data: this.datas
           // config:this.config
         })
           .then(res => {
-            console.log('sucess', res);
+            console.log("sucess", res);
             this.loading = false;
             if (res.status == 200) {
               this.$toast("提交成功");
@@ -439,7 +466,7 @@ export default {
           })
           .catch(e => {
             this.$toast("请假失败" + JSON.stringify(e));
-            console.log("error", e)
+            console.log("error", e);
           });
       }
     },
@@ -483,6 +510,6 @@ export default {
   height: 1.6rem;
   margin: 0 auto;
   font-size: 0.8rem;
-  margin-top: 30px;
+  margin-top: 130px;
 }
 </style>

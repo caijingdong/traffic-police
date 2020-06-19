@@ -17,7 +17,7 @@
             class="list"
             :name="item.c"
             v-for="(item,indexs) in doc"
-            :title="item.month + '月'"
+            :title="item.year +  '月' + item.month +  '月'"
             :key="indexs"
           >
             <li class="listxx">
@@ -86,8 +86,6 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      // msg: "Welcome to Your Vue.js App",
-      // password: "",
       active: "",
       activeName: "123",
       active1: "",
@@ -113,8 +111,7 @@ export default {
         .then(res => {
           if (res.data.code == "0000") {
             let doc = res.data.data;            
-           this.doc =  doc;   
-            console.log(res.data.data)         
+            this.doc =  doc;         
           } else {
             this.$toast("user.get fail: " + JSON.stringify(res));
           }
@@ -123,11 +120,8 @@ export default {
           this.$toast("user.get fail: " + JSON.stringify(e));
         });
     },
-    getin(){
-      
+    getin(){     
       this.doc = this.doc;
-      console.log(this.doc)
-
     },
   },
   created() {
