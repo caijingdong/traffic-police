@@ -21,64 +21,62 @@
             :key="indexs"
           >
             <li class="listxx">
-             工资
+              工资
               <span>{{item.salary}}</span>
             </li>
             <li class="listxx">
-             岗位补贴
+              岗位补贴
               <span>{{item.postAllowance}}</span>
             </li>
-             <li class="listxx">
-             层级工资
+            <li class="listxx">
+              层级工资
               <span>{{item.wageLevel}}</span>
             </li>
             <li class="listxx">
-             加班补贴
+              加班补贴
               <span>{{item.overtimeAllowance}}</span>
             </li>
             <li class="listxx">
-             绩效奖
+              绩效奖
               <span>{{item.meritPay}}</span>
             </li>
-             <li class="listxx">
-             职位津贴
+            <li class="listxx">
+              职位津贴
               <span>{{item.jobAllowance}}</span>
             </li>
             <li class="listxx">
-             其他补贴
+              其他补贴
               <span>{{item.otherExpenses}}</span>
             </li>
             <li class="listxx">
-             勤务
+              勤务
               <span>{{item.checkOnWorkAttendance}}</span>
             </li>
             <li class="listxx">
-             合计
+              合计
               <span>{{item.total}}</span>
             </li>
             <li class="listxx">
-             社保
+              社保
               <span>{{item.insuranceDeduction}}</span>
             </li>
             <li class="listxx">
-            公积金
+              公积金
               <span>{{item.accumulationFund}}</span>
             </li>
             <li class="listxx">
-            实发工资
+              实发工资
               <span>{{item.realWages}}</span>
             </li>
             <li class="listxx">
-            考核情况
+              考核情况
               <span>{{item.situation}}</span>
             </li>
           </van-tab>
         </van-tabs>
-       
-    
       </van-tab>
     </van-tabs>
-    <p>{{doc.id}}</p> 
+    <p>{{doc.id}}</p>
   </div>
 </template>
 <script>
@@ -93,13 +91,9 @@ export default {
       currentTime: "12:00",
       message: "",
       value: "",
-      doc:"",
-      //id:this.$route.params.id,
+      doc: "",
       newslist: {},
-      lists: [],
-
-     
-     
+      lists: []
     };
   },
   methods: {
@@ -110,23 +104,23 @@ export default {
       })
         .then(res => {
           if (res.data.code == "0000") {
-            let doc = res.data.data;            
-            this.doc =  doc;         
+            let doc = res.data.data;
+            this.doc = doc;
           } else {
-            this.$toast("user.get fail: " + JSON.stringify(res));
+            this.$toast("获取信息失败" + JSON.stringify(res));
           }
         })
         .catch(e => {
-          this.$toast("user.get fail: " + JSON.stringify(e));
+          this.$toast("获取信息失败" + JSON.stringify(e));
         });
     },
-    getin(){     
+    getin() {
       this.doc = this.doc;
-    },
+    }
   },
   created() {
-   this.getinfo();
-   this.getin()
+    this.getinfo();
+    this.getin();
   },
   mounted() {}
 };

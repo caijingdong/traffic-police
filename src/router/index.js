@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Applyleave from '@/pages/Applyleave'
-import list from '@/pages/list'
+import Leavelist from '@/pages/Leavelist'
 import Home from '@/pages/Home/Home'
 import Person from '@/pages/Person/Person'
 import Login from '@/pages/Person/Login'
@@ -13,16 +13,9 @@ import Wages from '@/pages/Home/Wages/Wages'
 import Qingwu from '@/pages/Home/Qingwu/Qingwu'
 import Leave from '@/pages/Home/Leave/Leave'
 import Khqk from '@/pages/Home/Khqk/Khqk'
-
 Vue.use(Router)
-
 export default new Router({
   routes: [
-    /* {
-      path: '/HelloWorld',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }, */
     {
       path: '/',
       redirect:'/Login',
@@ -95,9 +88,9 @@ export default new Router({
           showFooter1:true
         }
       }, {
-        path: 'list',
-        component:list,
-        name: 'list',
+        path: 'Leavelist',
+        component:Leavelist,
+        name: 'Leavelist',
         meta:{
           index:0,
           showFooter1:true

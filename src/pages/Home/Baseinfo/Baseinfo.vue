@@ -224,20 +224,6 @@
               <span>{{lists.hipline}}</span>
             </li>
           </van-tab>
-          <!--  <van-tab title="补充" class="list">
-            <li class="listxx">
-              填报人
-              <span>{{lists.informant}}</span>
-            </li>
-            <li class="listxx">
-              填报时间
-              <span>{{lists.fillInTheTime | ellipsis1}}</span>
-            </li>
-            <li class="listxx">
-              备注
-              <span>{{lists.remarks}}</span>
-            </li>
-          </van-tab>-->
         </van-tabs>
       </van-tab>
       <!-- 履历 -->
@@ -313,7 +299,7 @@
         </van-collapse>
       </van-tab>
       <!-- 训练 -->
-      <van-tab title="训练" class="recoder">
+      <van-tab title="训练" class="recoder" >
         <van-collapse v-model="activeNames">
           <van-collapse-item
             :title="train.project"
@@ -322,6 +308,7 @@
             v-for="train in train1"
             class="list-record"
             :key="train.id"
+            border="false"
           >
             <ul>
               <!-- <li class="listxx1 tebie" style="font-weight:bold">装备详情</li> -->
@@ -372,7 +359,7 @@
             class="list-record"
             :key="info.id"
           >
-            <ul>
+            <ul class="family-title">
               <!-- <li class="listxx1 tebie" style="font-weight:bold">装备详情</li> -->
               <li class="listxx1">
                 姓名
@@ -442,7 +429,6 @@ export default {
       equipments: {},
       personid: "",
       officename: "",
-      // code1: {},
       activeNames: ["1"],
       equipments1: "",
       equiptype: ""
@@ -595,7 +581,7 @@ li {
   height: 8px;
 }
 .hh {
-  height: 1500px;
+  height: 1400px;
 }
 .list {
   width: 15rem;
@@ -616,12 +602,17 @@ li {
   }
 }
 .recoder {
-  background-color: #f5f5f5;
-  height: 800px;
+  background-color: white;
+ // height: 800px;
+  .family-title{
 
+  }
   .list-record {
     margin: 10px;
     background-color: white;
+    border:1px solid #ebebeb;
+    
+
   }
   .tebie {
     font-weight: bold;
@@ -656,4 +647,7 @@ li {
   //line-height: 2.2rem ;
   font-size: 0.7rem;
 }
+/* /deep/ .van-hairline--top-bottom::after{
+  border:none;
+} */
 </style>

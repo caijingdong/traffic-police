@@ -23,7 +23,7 @@
       钉钉免登
       <img class="jiantou" src="./images/jiantou.png" alt />
     </div>
-    <div class="zc">Powered By Jucher </div>
+    <div class="zc">Powered By Jucher</div>
     <loading v-if="loading" ref="loading"></loading>
   </div>
 </template>
@@ -74,28 +74,20 @@ export default {
     ...mapMutations(["changeLogin"]),
     noLogin(url) {
       let vm = this;
-      /*       this.$toast.loading({
-        message: "加载中...",
-        forbidClick: true,
-        loadingType: "spinner"
-      }); */
       vm.loading = true;
       dd.ready(function() {
         dd.runtime.permission.requestAuthCode({
           corpId: "dingb66de550406f10f435c2f4657eb6378f",
           //corpId: "ding3b87191431b1e7eb35c2f4657eb6378f",测试
-          //ding3b87191431b1e7eb35c2f4657eb6378f
           onSuccess: function(info) {
             // 如果返回 Success
             // 将返回的校验码传给 /m/loginDingDing
             let data = qs.stringify(info);
-          
-           /*  MY_POST_DATA("/js/dingding/login", code) */
-                vm.axios({
+            vm.axios({
               method: "post",
               url: "/js/dingding/login",
               data
-            }) 
+            })
               .then(res => {
                 if (res.data.code == "0000") {
                   vm.loading = false;
@@ -108,14 +100,11 @@ export default {
                 }
               })
               .catch(e => {
-                //vm.$message.error("免登失败，请联系管理员");
-                // this.$toast("登录失败");
                 vm.$toast("user.get fail: " + JSON.stringify(e));
                 vm.loading = false;
               });
           },
           onFail: function(err) {
-            //alert("user.get fail: " + JSON.stringify(err));
             vm.loading = false;
             vm.$toast("登录失败" + JSON.stringify(err));
           }
@@ -133,9 +122,9 @@ export default {
       /*       if (this.username === "" || this.password === "") {
         //alert("账号或密码不能为空");
       } */
-      if (this.username === "" || this.password === ""){
+      if (this.username === "" || this.password === "") {
         this.$toast("密码输入错误");
-      }else {
+      } else {
         var secretKey = "thinkgem,jeesite,com";
         var username = DesUtils.encode(this.username, secretKey);
         var password = DesUtils.encode(this.password, secretKey);
@@ -152,22 +141,17 @@ export default {
           .then(res => {
             const data = res.data;
             if (data.result == "true") {
-              // this.$store.state.userInfo = data.data;
               this.loading = false;
               this.$store.commit("login");
               this.$store.state.isLogin = true;
               this.$router.push("/Home");
-              //this.$toast("登录");
-              //console.log(res.data)
             } else {
-              //alert("用户名或密码错误请重新输入");
-              this.$toast("账号密码错误" );
+              this.$toast("账号密码错误");
               this.loading = false;
             }
           })
-          .catch((err) => {
+          .catch(err => {
             this.$toast("账号密码错误");
-            console.log("error" + JSON.stringify(err))
             this.loading = false;
           });
       }
@@ -275,9 +259,7 @@ export default {
     text-align: center;
     font-size: 0.6rem;
     position: absolute;
-    bottom:1.8rem;
-    
-    
+    bottom: 1.8rem;
   }
 }
 </style>

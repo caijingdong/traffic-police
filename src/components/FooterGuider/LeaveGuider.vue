@@ -4,7 +4,7 @@
       <i style="font-size:1.1rem;" class="iconfont icon-qingjia1"></i>
       <p>请假</p>
     </div>
-    <div class="item" @click="clickItem('/Leave/list')" :class="{active: $route.path==='/Leave/list'}">
+    <div class="item" @click="clickItem('/Leave/Leavelist')" :class="{active: $route.path==='/Leave/Leavelist'}">
       <i style="font-size:1.1rem;" class="iconfont icon-shenpi"></i>
       <p>审批</p>
     </div>

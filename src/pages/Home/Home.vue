@@ -22,7 +22,7 @@
         <!--  <li class="business_li" @click="$router.push({ name: 'Qingwu' })">
           <img style="display:block;" src="./assets/qwap.png" alt />
         </li>-->
-        <li class="business_li" @click="$router.push({ name: 'HelloWorld' })">
+        <li class="business_li" @click="$router.push({ name: 'Applyleave' })">
           <img style="display:block;" src="./assets/icon_4.png" alt />
         </li>
         <li class="business_li" @click="$router.push({ name: 'Khqk' })">

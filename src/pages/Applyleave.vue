@@ -16,7 +16,6 @@
         @click="getBusiness"
       />
     </van-cell-group>
-
     <div
       style="font-size:0.4rem;text-align:left;height:1.2rem;;line-height:1.2rem;padding-left:0.4rem"
     >剩余时间：{{leaveYear}}天</div>
@@ -138,13 +137,9 @@ export default {
       value: "",
       value1: "",
       hdYear: "",
-      //endtime: "",
       business: "",
-      startdate: "",
-      enddate: "",
-      //show: false,
-      //show1: false,
-      //showPicker: false,
+      //startdate: "",
+      //enddate: "",
       endTime: "请选择时间",
       startTime: "请选择时间",
       className: "",
@@ -158,14 +153,9 @@ export default {
         "护理假",
         "病假",
         "事假",
-        "丧假",
-        "出国假",
-        "出境假"
+        "丧假"
       ],
       fileList: [
-        /*  { url: "https://img.yzcdn.cn/vant/leaf.jpg" }, */
-        // Uploader 根据文件后缀来判断是否为图片文件
-        // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
       ],
       minDate: new Date(2020, 0, 1),
       maxDate: new Date(2025, 10, 1),
@@ -223,7 +213,7 @@ export default {
       let datas = null;
       //处理文件上传的参数
       if (file !== null) {
-        //auth_user_file如果上传文件了，就不手动输入名单了
+        //file如果上传文件了，就不手动输入名单了
         let formData = new FormData();
         formData.append("leaveType", this.colovalue);
         formData.append("startTime", this.startTime);
@@ -232,16 +222,14 @@ export default {
         formData.append("annualLeaveRemaining", this.leaveYear);
         formData.append("leaveDays", this.days);
         formData.append("hdYear", this.hdYear);
-        console.log("sdfsdfsdfsd");
-        console.log(formData);
         for (const item of arr) {
           formData.append("file", item.file);
         }
         // formData.append(formdata);
-        console.log(formData.get("leaveType"));
-        console.log(formData.get("file"));
+       // console.log(formData.get("leaveType"));
+        //console.log(formData.get("file"));
         this.datas = formData;
-        console.log("datas:" + this.datas);
+        //console.log("datas:" + this.datas);
         config = {
           headers: { "Content-Type": "multipart/form-data" }
         };
@@ -265,6 +253,14 @@ export default {
               key: "年休假", //显示文本
               value: "123" //值，
             },
+             {
+              key: "病假", //显示文本
+              value: "123" //值，
+            },
+            {
+              key: "事假",
+              value: "234"
+            },
             {
               key: "婚假",
               value: "234"
@@ -276,23 +272,12 @@ export default {
             {
               key: "护理假", //显示文本
               value: "123" //值，
-            },
-            {
-              key: "事假",
-              value: "234"
-            },
+            },          
             {
               key: "丧假",
               value: "234"
-            },
-            {
-              key: "出国假", //显示文本
-              value: "123" //值，
-            },
-            {
-              key: "出境假",
-              value: "234"
             }
+           
           ],
           selectedKey: "年休假",
 
@@ -391,10 +376,8 @@ export default {
     postData() {
       var a = new Date(this.endTime).getTime();
       var b = new Date(this.startTime).getTime();
-
       var h = this.startTime;
       var f = this.endTime;
-      console.log(a);
       var c = this.days;
       var d = this.message;
       var e = this.colovalue;
@@ -419,7 +402,6 @@ export default {
         this.$toast("请假天数不能为空");
       } else if (d === "") {
         this.$toast("请假事由不能为空");
-        console.log(1);
       } else if (a < b) {
         this.$toast("开始时间需要小于结束时间");
       } else if (this.files.length == 0) {
@@ -430,43 +412,38 @@ export default {
           // config:this.config
         })
           .then(res => {
-            console.log("sucess", res);
             this.loading = false;
             if (res.status == 200) {
               this.$toast("提交成功");
               this.$router.push({ name: "list" });
             } else {
               this.$toast("请假失败" + JSON.stringify(res.message));
-              // console.log("请假失败" + JSON.stringify(res.message))
             }
           })
           .catch(e => {
             this.$toast("请假失败" + JSON.stringify(e));
-            console.log("error", e);
+           // console.log("error", e);
           });
       } else {
         this.loading = true;
-        console.log("22222");
         this.axios({
           method: "post",
           url: "/js/a/ams/takeleave/takeLeave/saveLeave",
           data: this.datas
-          // config:this.config
         })
           .then(res => {
-            console.log("sucess", res);
+            //console.log("sucess", res);
             this.loading = false;
             if (res.status == 200) {
               this.$toast("提交成功");
               this.$router.push({ name: "list" });
             } else {
               this.$toast("请假失败" + JSON.stringify(res.message));
-              // console.log("请假失败" + JSON.stringify(res.message))
             }
           })
           .catch(e => {
             this.$toast("请假失败" + JSON.stringify(e));
-            console.log("error", e);
+            //console.log("error", e);
           });
       }
     },
@@ -475,10 +452,8 @@ export default {
         method: "get",
         url: "/js/a/ams/takeleave/takeLeave/annualLeave"
       }).then(res => {
-        console.log(res.data);
         this.hdYear = res.data.annualLeaveTotal;
         this.leaveYear = res.data.annualLeaveRemaining;
-        console.log(this.leaveYear);
       });
     }
   },
