@@ -89,6 +89,7 @@ export default {
   }
   span {
     color: white;
+    text-align: center;
   }
 }
 .person {

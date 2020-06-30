@@ -249,6 +249,7 @@ export default {
     color: black;
     font-size: 0.6rem;
     margin-top: 0.6rem;
+    text-align: center;
     .jiantou {
       width: 0.6rem;
     }

@@ -13,6 +13,7 @@ import Wages from '@/pages/Home/Wages/Wages'
 import Qingwu from '@/pages/Home/Qingwu/Qingwu'
 import Leave from '@/pages/Home/Leave/Leave'
 import Khqk from '@/pages/Home/Khqk/Khqk'
+import Policeinfo from '@/pages/Home/Policeinfo/Policeinfo'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -73,6 +74,12 @@ export default new Router({
       path: '/Qingwu',
       component: Qingwu,
       name: 'Qingwu',
+      
+    },
+    {
+      path: '/Policeinfo',
+      component: Policeinfo,
+      name: 'Policeinfo',
       
     },
     {

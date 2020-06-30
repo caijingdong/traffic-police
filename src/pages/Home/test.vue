@@ -1,56 +1,36 @@
+
 <template>
   <div class="hello">
+    <!--首页头部-->
+    <!-- <div class="all clearfix" @click="$router.push({ name: 'Search' })">
+      <input class="header_search" readonly="“readonly”" type="text" value="智能搜索" />
+      <div class="search"></div>
+    </div>-->
+    <!--首页轮播图-->
     <div class="banner">
-      <img src="./assets/img/banner.png" alt />
+      <img src="./assets/banner.png" alt />
     </div>
     <!--个人业务-->
     <div class="content">
       <div class="service">个人业务</div>
       <ul class="business">
         <li class="business_li" @click="$router.push({ name: 'Baseinfo' })">
-          <div class="img_li">
-            <img style="display:block;" src="./assets/img/icon_person.png" alt />
-          </div>
-          <div class="plain_li">
-            <h1>基本信息</h1>
-            <p>个人档案</p>
-          </div>
+          <img style="display:block;" src="./assets/icon_1.png" alt />
         </li>
         <li class="business_li" @click="$router.push({ name: 'Wages' })">
-          <div class="img_li">
-            <img style="display:block;" src="./assets/img/icon_7.png" alt />
-          </div>
-          <div class="plain_li">
-            <h1>工资明细</h1>
-            <p>每月工资详细</p>
-          </div>
+          <img style="display:block;" src="./assets/icon_2.png" alt />
         </li>
+        <!--  <li class="business_li" @click="$router.push({ name: 'Qingwu' })">
+          <img style="display:block;" src="./assets/qwap.png" alt />
+        </li>-->
         <li class="business_li" @click="$router.push({ name: 'Applyleave' })">
-          <div class="img_li">
-            <img style="display:block;" src="./assets/img/icon_8.png" alt />
-          </div>
-          <div class="plain_li">
-            <h1>请销假管理</h1>
-            <p>休假、出入境申请</p>
-          </div>
+          <img style="display:block;" src="./assets/icon_4.png" alt />
         </li>
         <li class="business_li" @click="$router.push({ name: 'Khqk' })">
-          <div class="img_li">
-            <img style="display:block;" src="./assets/img/icon_9.png" alt />
-          </div>
-          <div class="plain_li">
-            <h1>考核情况</h1>
-            <p>年终考核情况</p>
-          </div>
+          <img style="display:block;" src="./assets/icon_3.png" alt />
         </li>
-        <li v-if="personid == 1" class="business_li" @click="$router.push({ name: 'Policeinfo' })">
-          <div class="img_li">
-            <img style="display:block;" src="./assets/img/icon_9.png" alt />
-          </div>
-          <div class="plain_li">
-            <h1>民警信息</h1>
-            <p>考察信息</p>
-          </div>
+        <li v-if="personid == 0" class="business_li" @click="$router.push({ name: 'Policeinfo' })">
+          <img style="display:block;" src="./assets/icon_6.png" alt />
         </li>
       </ul>
     </div>
@@ -66,14 +46,15 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      personid: 1
+      personid:0
     };
   },
 
   methods: {
     openPicker() {
       this.$refs.picker.open();
-    }
+    },
+ 
   },
 
   created: function() {
@@ -83,11 +64,6 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-h1,
-p {
-  margin: 0;
-  padding: 0;
-}
 .all {
   width: 15.25rem;
   height: 2rem;
@@ -107,7 +83,7 @@ p {
     border: none;
     color: #666;
   }
-/*   .search {
+  /* .search {
     float: right;
     width: 1.5rem;
     height: 1.5rem;
@@ -150,8 +126,7 @@ p {
     text-align: center;
     img {
       margin: 0 auto;
-      width: 0.8rem;
-      display: block;
+      width: 100%;
     }
   }
   .business {
@@ -161,36 +136,13 @@ p {
     justify-content: space-between;
     flex-wrap: wrap;
     .business_li {
-      width: 49%;
-      height: 2.8rem;
+      width: 48%;
       flex-direction: column;
       margin-bottom: 0.4rem;
-      background-color: #f9f9fb;
-      border-radius: 0.25rem;
-      .plain_li {
-        float: left;
-        margin: 0.7rem 0 0.2rem 0.2rem;
-        h1 {
-          font-size: 0.6rem;
-          font-weight: normal;
-          color: black;
-          margin-bottom: 0.1rem;
-        }
-        p {
-          font-size: 0.6rem;
-        }
-      }
-
-      .img_li {
-        width: 1.8rem;
-        float: left;
-        margin: 0.54rem 0 0 0.4rem;
-
-        img {
-          display: block;
-          width: 100%;
-          margin-bottom: 0.2rem;
-        }
+      img {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.2rem;
       }
     }
     .wenzi {
@@ -208,3 +160,4 @@ p {
   background-color: #f6f5f4;
 }
 </style>
+
