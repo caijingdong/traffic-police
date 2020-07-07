@@ -19,32 +19,32 @@
             :key="indexs"
           >
            <!--  <ul v-for="assess in assess1" :key="assess.id"> -->
-              <li class="listxx border">
+              <li class="item-list border">
                 机构名称
                 <span>{{assess.officeName}}</span>
               </li>
-              <li class="listxx">
+              <li class="item-list">
                 年份
                 <span>{{assess.year}}</span>
               </li>
-              <li class="listxx">
+              <li class="item-list">
                 评定等级
                 <span>{{userdata}}</span>
               </li>
 
-              <li class="listxx">
+              <li class="item-list">
                 1月
                 <span></span>
               </li>
-              <li class="listxx">
+              <li class="item-list">
                 2月
                 <span></span>
               </li>
-              <li class="listxx">
+              <li class="item-list">
                 3月
                 <span></span>
               </li>
-              <li class="listxx">
+              <li class="item-list">
                 4月
                 <span></span>
               </li>
@@ -206,7 +206,7 @@ li {
 .list {
   width: 15rem;
   margin: 0 auto;
-  .listxx {
+  .item-list {
     font-size: 0.7rem;
     text-align: left;
     color: #595959;

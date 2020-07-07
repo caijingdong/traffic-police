@@ -1,58 +1,75 @@
 <template>
   <div class="police">
-      <div class="title">辅警信息</div>
-      <div class="police-list">
-          <ul class="item-list">
-              <li @click="$router.push({ name: 'Baseinfo' })">辅警小张<span><img style="display:block;" src="../assets/row.png" alt /></span></li>
-              <li>里里阿达<span><img style="display:block;" src="../assets/row.png" alt /></span></li>
-              <li>里里阿达<span><img style="display:block;" src="../assets/row.png" alt /></span></li>
-          </ul>
-      </div>
-
-
+    <div class="title">辅警信息</div>
+    <div class="police-list">
+      <ul class="item-list">
+        <!--  <li @click="$router.push({ name: 'Policeleave' })">辅警小张<span>待审批<img style="display:block;" src="../assets/row.png" alt /></span></li> -->
+        <li v-for="item in policeData" :key="item.id">
+          <div class="item-top">
+            <div class="head-left">
+              <img style="display:block;" src="../assets/img/police.png" alt />
+            </div>
+            <div class="text-right">
+              <span style="color:#333333;font-size:0.8rem;font-weight:bold;">
+                {{item.name}}
+                <br />
+              </span>
+              <span>{{item.typesOfIdentity}}</span>
+             
+            </div>
+             <div class="waitleave">{{item.waitAudit}}条未审核</div>
+          </div>
+          <div class="item-bottom">
+            <ul>
+              <li @click="goDetail(item.id)">
+                <div class="item-person">
+                  <img style="display:block;" src="../assets/img/head.png" alt />
+                </div>个人档案
+              </li>
+              <li @click="goLeavelist(item.id)">
+                <div class="item-person">
+                  <img style="display:block;" src="../assets/img/approve.png" alt />
+                </div>审批信息
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
 import qs from "qs";
 import { formatDate } from "../js/format.js";
+import { POLICE_GET_DATA } from "@/api/api";
 export default {
   name: "HelloWorld",
   data() {
     return {
-
+      policeData: ""
     };
   },
   methods: {
-   
-  },
-  created() {
-
-    
-  },
-  mounted() {},
-  filters: {
-    // 版本号显示12位，超过12位显示...
-    ellipsis: function(value) {
-      if (!value) return "";
-      if (value.length > 10) {
-        return value.slice(12, 30) + "...";
-      }
-      return value;
+    getccNameInfo() {
+      POLICE_GET_DATA(
+        "/js/a/ams/personnelfile/personnelFile/auxiliaryPoliceListData"
+      ).then(res => {
+        //console.log(res.data)
+        this.policeData = res.data;
+      });
     },
-    ellipsis1: function(value) {
-      if (!value) return "";
-      if (value.length > 10) {
-        return value.slice(0, 10);
-      }
-      return value;
+    goDetail(id) {
+      this.$router.push("/Personinfo/" + id);
     },
-    formatDate(time) {
-      //time = time * 1000;
-      let date = new Date(time);
-      //console.log(new Date(time));
-      return formatDate(date, "yyyy-MM-dd ");
+    goLeavelist(id) {
+      this.$router.push("/Policeleave/" + id);
     }
   },
+  created() {
+    this.getccNameInfo();
+    //this.getLeavelist()
+  },
+  mounted() {},
 
   computed: {
     reversedMessage: function() {
@@ -69,19 +86,19 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-.police{
-    .title{
-        width:100%;
-        height:1.8rem;
-        background-color: #3270e1;
-        color:white;
-        text-align: center;
-        line-height: 1.8rem;
-        font-size:0.8rem;
-    }
-    .police-list{
-        ul{
-            li{
+.police {
+  .title {
+    width: 100%;
+    height: 1.8rem;
+    background-color: #3270e1;
+    color: white;
+    text-align: center;
+    line-height: 1.8rem;
+    font-size: 0.8rem;
+  }
+  .police-list {
+    ul {
+      /*             li{
                 height:2rem;
                 line-height:2rem;
                 font-size:0.7rem;
@@ -90,17 +107,74 @@ export default {
                 color:black;
                 span{
                     float:right;
-                    width:0.3rem;
+                    width:3rem;
                     padding-right:0.6rem;
-                    margin-top:0.8rem;
+                    line-height:2rem;
+                    
+                   
                     img{
                         display:block;
-                        width:100%;
+                        width:0.4rem;
+                        float:right;
+                        margin-top:0.7rem;
                     }
                 }
-            }
+            } */
+      .item-top {
+        border-bottom: 1px solid #f0f0f0;
+        height: 3.6rem;
+        .head-left {
+          float: left;
+          width: 2.5rem;
+          height: 2.5rem;
+          margin: 0.5rem 0 0 0.4rem;
+          img {
+            width: 100%;
+          }
         }
-    }
-}
+        .text-right {
+          float: left;
+          margin: 0.7rem 0 0 0.3rem;
+          span {
+            float: none;
+            font-size: 0.7rem;
+            margin-top: 1rem;
+          }
 
+        }
+        .waitleave {
+          float: right;
+          color: #d92222;
+          font-size: 0.7rem;
+          margin: 0;
+          padding: 0;
+          margin-right: 0.4rem;
+          margin-top: 2rem;
+        }
+      }
+      .item-bottom {
+        height: 2rem;
+        border-bottom: 0.4rem solid #f0f0f0;
+        ul {
+          li {
+            width: 49%;
+            float: left;
+            font-size: 0.7rem;
+            line-height: 2rem;
+            height: 2rem;
+            color: #56585a;
+            .item-person {
+              float: left;
+              width: 0.8rem;
+              margin: 0.56rem 0.2rem 0 2rem;
+              img {
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </style>

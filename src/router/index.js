@@ -14,6 +14,14 @@ import Qingwu from '@/pages/Home/Qingwu/Qingwu'
 import Leave from '@/pages/Home/Leave/Leave'
 import Khqk from '@/pages/Home/Khqk/Khqk'
 import Policeinfo from '@/pages/Home/Policeinfo/Policeinfo'
+import Policeleave from '@/pages/Home/Policeinfo/Policeleave'
+import Personinfo from '@/pages/Home/Policeinfo/Personinfo'
+import Leaveinfo from '@/pages/Home/Policeinfo/Leaveinfo'
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -80,6 +88,24 @@ export default new Router({
       path: '/Policeinfo',
       component: Policeinfo,
       name: 'Policeinfo',
+      
+    },
+    {
+      path: '/Personinfo/:id',
+      component: Personinfo,
+      name: 'Personinfo',
+      
+    },
+    {
+      path: '/Policeleave/:id',
+      component: Policeleave,
+      name: 'Policeleave',
+      
+    },
+    {
+      path: '/Leaveinfo/:id',
+      component: Leaveinfo,
+      name: 'Leaveinfo',
       
     },
     {

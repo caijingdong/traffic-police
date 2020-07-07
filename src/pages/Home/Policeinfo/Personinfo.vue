@@ -133,7 +133,7 @@
             </li>
             <li class="item-list">
               身份编号
-              <span>{{lists.identitySerialNumber}}</span>
+              <span>{{lists.managementOfCivilianPolice}}</span>
             </li>
             <li class="item-list">
               初始警龄
@@ -239,7 +239,6 @@
               :key="record.id"
             >
               <ul>
-                
                 <li class="item-record">
                   开始时间
                   <span>{{record.startDate | ellipsis1}}</span>
@@ -256,7 +255,7 @@
                   证明人
                   <span>{{record.certifier}}</span>
                 </li>
-                
+
                 <li class="item-record">
                   更新时间
                   <span>{{record.updateDate | ellipsis1}}</span>
@@ -299,7 +298,7 @@
         </van-collapse>
       </van-tab>
       <!-- 训练 -->
-      <van-tab title="训练" class="recoder" >
+      <van-tab title="训练" class="recoder">
         <van-collapse v-model="recorderName">
           <van-collapse-item
             :title="train.project"
@@ -348,7 +347,7 @@
         </van-collapse>
       </van-tab>
       <!-- 家庭 -->
-      <van-tab title="家庭" class="recoder" >
+      <van-tab title="家庭" class="recoder">
         <van-collapse v-model="recorderName">
           <van-collapse-item
             :title="info.relationship"
@@ -406,88 +405,35 @@
 <script>
 import qs from "qs";
 import { formatDate } from "../js/format.js";
+import { PERSON_GET_DATA } from "@/api/api";
 export default {
   name: "HelloWorld",
   data() {
     return {
+      id: this.$route.params.id,
       selectName: "",
       myText: "",
-      //active2: "123",
       info: {},
-      familyInfo: "",//家庭信息
+      familyInfo: "", //家庭信息
       lists: {},
-      userRecord: "",//用户履历
-      userTrain: "",//用户训练信息
+      userRecord: "", //用户履历
+      userTrain: "", //用户训练信息
       params: {},
       value: "",
       code: {},
       dada: "",
       equiptype: "",
       office: {},
-      office1: {},
+     // office1: {},
       equipments: {},
       personid: "",
       officename: "",
       recorderName: ["1"],
-      equipments1: "",
+      //equipments1: "",
       equiptype: ""
     };
   },
   methods: {
-    fine() {
-      dd.ready(function() {
-        dd.biz.util.scan({
-          type: String,
-          onSuccess: function() {},
-          onFail: function() {}
-        });
-      });
-    },
-    getinfo() {
-      this.axios({
-        method: "get",
-        url: "/js/a/ams/personnelfile/personnelFile/getCurrentUserPersonnelFile"
-      })
-        .then(res => {
-          if (res.data.code == "0000") {
-            let doc = res.data.data;
-            console.log(doc)
-            this.personid = doc.id;
-            this.lists = doc;
-            this.office = this.lists.office;
-            this.familyInfo = doc.familyMembers;
-            //console.log(this.familyinfo)
-            this.userRecord = doc.personnelRecords;
-            this.userTrain = doc.trainingRecords;
-            this.equipments = doc.equipmentList;
-            this.dada = this.code.filter(item => {
-              if (this.lists.politicsStatusKey == item.dictValue) {
-                return item;
-              }
-            });
-            this.dada = this.dada[0].treeNames;
-          } else {
-            this.$toast("user.get fail: " + JSON.stringify(res));
-          }
-        })
-        .catch(e => {
-          this.$toast("info.get fail: " + JSON.stringify(e));
-        });
-    },
-    getEquepment() {
-      this.axios({
-        method: "get",
-        url: "/js/a/ams/equipment/equipment/viewData"
-      })
-        .then(res => {
-          this.equipments = res.data.list;
-          this.office1 = this.equipments[0].office;
-          this.officename = this.office1.officeName;         
-        })
-        .catch(e => {
-          this.$toast("equipment.get fail: " + JSON.stringify(e));
-        });
-    },
     getValueobj() {
       this.axios({
         method: "post",
@@ -516,13 +462,52 @@ export default {
         .catch(err => {
           this.$toast("valueobj.get fail: " + JSON.stringify(err));
         });
+    },
+    getDetailinfo() {
+        const params = { id: this.id };
+        PERSON_GET_DATA("/js/a/ams/personnelfile/personnelFile/getAuxiliaryPolice",params)
+        .then(res => {
+          if (res.data.code == "0000") {
+            //console.log(res.data)
+            let doc = res.data.data;
+            this.personid = doc.id;
+            this.lists = doc;
+            this.office = this.lists.office;
+            this.familyInfo = doc.familyMembers;
+            this.userRecord = doc.personnelRecords;
+            this.userTrain = doc.trainingRecords;
+            this.equipments = doc.equipmentList;
+            let arr = []
+            this.equipments.forEach(element => {
+              arr.push(element.office)
+
+              
+            });
+            //console.log(arr)
+            let max = arr[0]
+            for (let i = 0; i < arr.length; i++) {
+              if (max < arr[i]) {
+              max = arr[i]
+          }
+        }
+            this.dada = this.code.filter(item => {
+              if (this.lists.politicsStatusKey == item.dictValue) {
+                return item;
+              }
+            });
+            this.dada = this.dada[0].treeNames;
+          } else {
+            this.$toast("获取辅警信息失败" );
+          }
+        });
     }
   },
   created() {
     //this.getNewlist()
-    this.getinfo();
+    //this.getinfo();
     this.getValueobj();
     //this.getEquepment();
+    this.getDetailinfo();
   },
   mounted() {},
   filters: {
@@ -550,14 +535,20 @@ export default {
   },
 
   computed: {
-    reversedMessage: function() {
-      // `this` 指向 vm 实例
-      return this.office.officeName;
+    //reversedMessage: function() {
+      //return this.office.officeName;
       /*       const arr = this.code.filter(item => {
         if(this.lists.politicsStatusKey == item.dictValue) {
           return item
         }
       }) */
+   // },
+    getinfo:function(){
+      this.equipments.forEach(element => {
+
+              
+            });
+
     }
   }
 };
@@ -603,13 +594,11 @@ li {
 }
 .recoder {
   background-color: white;
- // height: 800px;
+  // height: 800px;
   .list-record {
     margin: 10px;
     background-color: white;
-    border:1px solid #ebebeb;
-    
-
+    border: 1px solid #ebebeb;
   }
   .tebie {
     font-weight: bold;

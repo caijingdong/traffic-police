@@ -2,7 +2,6 @@
   <div class="hello">
     <van-cell-group>
       <van-field
-        v-model="username"
         required
         clearable
         label="请假类型"
@@ -22,7 +21,6 @@
 
     <van-cell-group style="margin-bottom:0.6rem;">
       <van-field
-        v-model="username"
         required
         clearable
         label="开始时间"
@@ -36,7 +34,6 @@
         @click="getStarttime"
       />
       <van-field
-        v-model="username"
         type="password"
         label="结束时间"
         :placeholder="endTime"
@@ -79,12 +76,12 @@
     </van-cell-group>
     <van-cell-group>
       <van-field
-        v-model="password"
         label="附件"
         size="large"
         style="border:none;margin-bottom:0.4rem"
         label-align="left"
         label-width="60px"
+        accept="image/png, image/jpeg"
       />
 
       <van-uploader
@@ -95,7 +92,6 @@
         :max-count="countIndex"
       />
     </van-cell-group>
-
     <div class="anniu" @click="postData">
       <p>提交</p>
       <loading v-if="loading" ref="loading"></loading>
@@ -120,33 +116,31 @@ export default {
         leaveType: null,
         startTime: null,
         endTime: null,
-        reason: [],
+        message: [],
         annualLeaveRemaining: null,
         leaveDays: null,
         file: null
       },
       config: "",
       isLoadingShow: true,
-      password: "",
+      // password: "",
       hdYear: "",
       leaveYear: "",
-      username: "",
-      currentTime: "12:00",
+      // username: "",
+      //currentTime: "12:00",
       message: "",
       colovalue: "",
       value: "",
       value1: "",
       hdYear: "",
       business: "",
-      //startdate: "",
-      //enddate: "",
       endTime: "请选择时间",
       startTime: "请选择时间",
       className: "",
       days: "",
       loading: false,
       pictures: "",
-      columns: [
+      /*       columns: [
         "年休假",
         "婚假",
         "产假",
@@ -154,9 +148,8 @@ export default {
         "病假",
         "事假",
         "丧假"
-      ],
-      fileList: [
-      ],
+      ], */
+      fileList: [],
       minDate: new Date(2020, 0, 1),
       maxDate: new Date(2025, 10, 1),
       currentDate: new Date(),
@@ -218,7 +211,7 @@ export default {
         formData.append("leaveType", this.colovalue);
         formData.append("startTime", this.startTime);
         formData.append("endTime", this.endTime);
-        formData.append("reason", this.message);
+        formData.append("remarks", this.message);
         formData.append("annualLeaveRemaining", this.leaveYear);
         formData.append("leaveDays", this.days);
         formData.append("hdYear", this.hdYear);
@@ -226,7 +219,7 @@ export default {
           formData.append("file", item.file);
         }
         // formData.append(formdata);
-       // console.log(formData.get("leaveType"));
+        // console.log(formData.get("leaveType"));
         //console.log(formData.get("file"));
         this.datas = formData;
         //console.log("datas:" + this.datas);
@@ -253,7 +246,7 @@ export default {
               key: "年休假", //显示文本
               value: "123" //值，
             },
-             {
+            {
               key: "病假", //显示文本
               value: "123" //值，
             },
@@ -272,12 +265,11 @@ export default {
             {
               key: "护理假", //显示文本
               value: "123" //值，
-            },          
+            },
             {
               key: "丧假",
               value: "234"
             }
-           
           ],
           selectedKey: "年休假",
 
@@ -314,7 +306,7 @@ export default {
       dd.ready(function() {
         dd.biz.util.datetimepicker({
           format: "yyyy-MM-dd HH:mm",
-          value: value1 ,
+          value: value1,
           //默认显示
           onSuccess: function(result) {
             that.startTime = result.value;
@@ -327,7 +319,6 @@ export default {
     getEndtime() {
       const that = this;
       var aData = new Date();
-
       var value2 =
         aData.getFullYear() +
         "-" +
@@ -385,7 +376,7 @@ export default {
       formData.append("leaveType", this.colovalue);
       formData.append("startTime", this.startTime);
       formData.append("endTime", this.endTime);
-      formData.append("reason", this.message);
+      formData.append("remarks", this.message);
       formData.append("annualLeaveRemaining", this.leaveYear);
       formData.append("leaveDays", this.days);
       formData.append("hdYear", this.hdYear);
@@ -415,14 +406,14 @@ export default {
             this.loading = false;
             if (res.status == 200) {
               this.$toast("提交成功");
-              this.$router.push({ name: "list" });
+              this.$router.push({ name: "Leavelist" });
             } else {
               this.$toast("请假失败" + JSON.stringify(res.message));
             }
           })
           .catch(e => {
             this.$toast("请假失败" + JSON.stringify(e));
-           // console.log("error", e);
+            // console.log("error", e);
           });
       } else {
         this.loading = true;
@@ -436,7 +427,7 @@ export default {
             this.loading = false;
             if (res.status == 200) {
               this.$toast("提交成功");
-              this.$router.push({ name: "list" });
+              this.$router.push({ name: "Leavelist" });
             } else {
               this.$toast("请假失败" + JSON.stringify(res.message));
             }

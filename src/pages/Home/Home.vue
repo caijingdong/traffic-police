@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="home">
     <div class="banner">
       <img src="./assets/img/banner.png" alt />
     </div>
@@ -43,9 +43,13 @@
             <p>年终考核情况</p>
           </div>
         </li>
-        <li v-if="personid == 1" class="business_li" @click="$router.push({ name: 'Policeinfo' })">
+        <li
+          v-if="personid == true"
+          class="business_li"
+          @click="$router.push({ name: 'Policeinfo' })"
+        >
           <div class="img_li">
-            <img style="display:block;" src="./assets/img/icon_9.png" alt />
+            <img style="display:block;" src="./assets/img/icon_10.png" alt />
           </div>
           <div class="plain_li">
             <h1>民警信息</h1>
@@ -62,22 +66,30 @@
 
 <script>
 import * as dd from "dingtalk-jsapi";
+import { ID_GET} from "@/api/api";
 export default {
   name: "HelloWorld",
   data() {
     return {
-      personid: 1
+      personid: ""
     };
   },
-
   methods: {
-    openPicker() {
-      this.$refs.picker.open();
+    getNameId() {
+      ID_GET("/js/a/ams/takeleave/takeLeave/isPolice")
+        .then(res => {
+          this.personid = res.data;
+          //console.log(res)
+          //console.log("获取成功" + this.personid);
+        })
+        .catch(e => {
+          this.$toast("info.get fail: " + JSON.stringify(e));
+        });
     }
   },
 
   created: function() {
-    //this.getinfo();
+    this.getNameId();
   }
 };
 </script>
@@ -107,7 +119,7 @@ p {
     border: none;
     color: #666;
   }
-/*   .search {
+  /*   .search {
     float: right;
     width: 1.5rem;
     height: 1.5rem;
@@ -157,7 +169,6 @@ p {
   .business {
     display: flex;
     width: 15.25rem;
-
     justify-content: space-between;
     flex-wrap: wrap;
     .business_li {
@@ -169,7 +180,7 @@ p {
       border-radius: 0.25rem;
       .plain_li {
         float: left;
-        margin: 0.7rem 0 0.2rem 0.2rem;
+        margin: 0.6rem 0 0.2rem 0.3rem;
         h1 {
           font-size: 0.6rem;
           font-weight: normal;

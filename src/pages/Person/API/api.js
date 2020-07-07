@@ -1,4 +1,4 @@
-import request from './http'
+/* import request from './http'
 
 export function MY_GET(url, params) {
   return request({
@@ -34,4 +34,4 @@ export function MY_POST_UPLOAD(url, data, params) {
     data,
     params
   })
-}
+} */

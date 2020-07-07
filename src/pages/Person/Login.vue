@@ -11,7 +11,6 @@
     <div class="longin-boder">
       <input name="username" class="input" type="text" v-model="username" placeholder="输入用户名" />
     </div>
-
     <div class="longin-boder">
       <div class="image"></div>
       <input name="password" class="input" type="password" v-model="password" placeholder="输入密码" />
@@ -31,7 +30,7 @@
 import { mapMutations } from "vuex";
 import qs from "qs";
 import axios from "axios";
-import { MY_POST_QUERY, MY_GET, MY_POST_DATA } from "./api/api";
+import { MY_POST_QUERY, MY_GET, MY_POST_DATA } from "@/api/api";
 import { des } from "./des";
 import * as dd from "dingtalk-jsapi";
 import loading from "@/components/loading/Loading.vue";
@@ -96,7 +95,6 @@ export default {
                   vm.$store.state.showname = false;
                 } else {
                   vm.$toast("登录失败" + JSON.stringify(res));
-                  console.log(res);
                 }
               })
               .catch(e => {
@@ -132,12 +130,7 @@ export default {
         params.username = username;
         params.password = password;
         this.loading = true;
-        /* MY_POST_QUERY("/js/a/login", params) */
-        this.axios({
-          method: "post",
-          url: "/js/a/login",
-          params
-        })
+        MY_POST_QUERY("/js/a/login", params)
           .then(res => {
             const data = res.data;
             if (data.result == "true") {

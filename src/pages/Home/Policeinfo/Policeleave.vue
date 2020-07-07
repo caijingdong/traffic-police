@@ -1,14 +1,14 @@
 <template>
   <div class="launch">
     <div class="launch-wrapper">
-      <div class="item-wrapper"  v-for="item in leaveList" :key="item.id">
-        <div class="item">
+      <div class="item-wrapper" @click="goDetailLeave(item.id)"  v-for="item in leaveList" :key="item.id">
+        <div  class="item">
           <div class="item-img">
             <span class="img">{{name}}</span>
           </div>
           <div class="item-content">
             <div class="title-wrapper">
-              <h2 class="title">我的请假申请</h2>
+              <h2 class="title">请假申请</h2>
               <span class="timer"></span>
             </div>
             <div class="block">
@@ -24,10 +24,9 @@
               <span class="ls">{{item.endTime}}</span>
             </div>
             <div class="info">
-<!--               <p v-if="item.flowStateKey == 4" class="waited">待审核</p>
-              <p v-if="item.flowStateKey == 13" class="success">通过</p>              
-              <p v-if="item.flowStateKey == 5" class="closed">驳回</p> -->
-              <p :class="{success:item.flowStateKey == 12,closed:item.flowStateKey == 16,waited:item.flowStateKey == 1}">{{item.flowState}}</p>
+              <p v-if="item.status == 4" class="waited">待审核</p>
+              <p v-if="item.status == 0" class="success">通过</p>              
+              <p v-if="item.status == 5" class="closed">驳回</p>
             </div>
           </div>
         </div>
@@ -43,11 +42,11 @@
 </template>
 <script >
 // 引入 api
-import loading from "../components/loading/Loading.vue";
+import loading from "@/components/loading/Loading.vue";
 import { mapMutations } from "vuex";
 
 import axios from "axios";
-import { MY_GET_DATA } from "./Person/api/api";
+//import { MY_GET_DATA } from "./Person/api/api";
 
 //import * as dd from "dingtalk-jsapi";
 export default {
@@ -56,7 +55,7 @@ export default {
   },
   created() {
     this.getLeavelist();
-    this.getinfo()
+    //this.goDetailLeave()
     // mock数据
   },
 
@@ -67,75 +66,63 @@ export default {
       nowName: {},
       personid: "",
       leaveList:"",
-      name:"",
+      name:{},
+      user:{},
       loading: false,
-      waitLeave:[]
+      id: this.$route.params.id,
+      leaveid:"",
+     // waitLeave:[]
     };
   },
   methods: {
     ...mapMutations(["changeLogin"]),
-    getLeavelist() {
-      /* MY_GET_DATA("/js/a/ams/takeleave/takeLeave/findData", {"personnelFile.id": this.personid}) */
+    getLeavelist() {   
       this.axios({
-        method: "post",
-        url: "/js/a/ams/takeleave/takeLeave/findData",
+        method: "get",
+        url: "/js/a/ams/takeleave/takeLeave/takeLeaveListData",
+         params: {
+          "personnelFile.id": this.id
+        }
       })
         .then(res => {
           //console.log("postData:执行完毕");
-          console.log(res.data)
-          this.leaveList = res.data.list
-          //console.log(this.leaveList.length)
-          //let waitLeave = []
-          this.waitLeave =  this.leaveList.filter(elem => {
-             if(elem.flowStateKey == 1){
-               return elem
-             }          
+          //console.log(res.data)
+          this.leaveList = res.data
+          let arr = [] 
+          this.leaveList.forEach(element => {
+            arr.push(element.user)           
           });
-          console.log(this.waitLeave)
+         this.name = arr[0].userName
+         //this.waitLeave = this.leaveList.length
+         
         })
         .catch(e => {
-          this.$toast("user.get fail: " + JSON.stringify(e));
+          this.$toast("list.get fail" );
         });
     },
-    getinfo() {
-      this.loading = true;
-      this.axios({
-        method: "get",
-        url: "/js/a/ams/personnelfile/personnelFile/getCurrentUserPersonnelFile"
+    goDetailLeave(id){
+/*       this.axios({
+        method:"get",
+        url:"/js/a/ams/takeleave/takeLeave/takeLeaveAudit",
+
       })
-        .then(res => {
-          if (res.data.code == "0000") {
-            //console.log("请求以后的标记");
-            let doc = res.data.data;
-             this.name = doc.name
-            this.personid = doc.id;
-            console.log(this.name)
-            this.getLeavelist();
-            this.loading = false;
-            /*            // console.log(doc);
-            this.lists = doc;
-            this.office = this.lists.office;
-            //this.officename = this.office.officeName
-            this.info1 = doc.familyMembers;
-            this.record1 = doc.personnelRecords;
-            this.train1 = doc.trainingRecords;
-            this.dada = this.code.filter(item => {
-              if (this.lists.politicsStatusKey == item.dictValue) {
-                return item;
-              }
-            });
-            this.dada = this.dada[0].treeNames;
-            this.getEquepment();
-            //this.code = this.code
-            //console.log(this.code);
-            //console.log(this.record); */
-          } else {
-            this.$toast("user.get fail: " + JSON.stringify(res));
-          }
-        })
-        .catch(e => {
-          this.$toast("user.get fail: " + JSON.stringify(e));
-        });
+      .then(res => {
+        console.log(res.data)
+      }) */
+      this.$router.push("/Leaveinfo/" + id)
+    }
+  },
+    computed: {
+    reversedMessage: function() {
+                
+          
+          //this.name = arr.userName
+      return arr;
+      /*       const arr = this.code.filter(item => {
+        if(this.lists.politicsStatusKey == item.dictValue) {
+          return item
+        }
+      }) */
     }
   }
 };
@@ -234,4 +221,3 @@ p {
   height: 1px;
 }
 </style>
-
