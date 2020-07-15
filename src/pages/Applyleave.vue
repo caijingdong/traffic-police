@@ -18,7 +18,6 @@
     <div
       style="font-size:0.4rem;text-align:left;height:1.2rem;;line-height:1.2rem;padding-left:0.4rem"
     >剩余时间：{{leaveYear}}天</div>
-
     <van-cell-group style="margin-bottom:0.6rem;">
       <van-field
         required
@@ -123,11 +122,8 @@ export default {
       },
       config: "",
       isLoadingShow: true,
-      // password: "",
       hdYear: "",
       leaveYear: "",
-      // username: "",
-      //currentTime: "12:00",
       message: "",
       colovalue: "",
       value: "",
@@ -140,15 +136,6 @@ export default {
       days: "",
       loading: false,
       pictures: "",
-      /*       columns: [
-        "年休假",
-        "婚假",
-        "产假",
-        "护理假",
-        "病假",
-        "事假",
-        "丧假"
-      ], */
       fileList: [],
       minDate: new Date(2020, 0, 1),
       maxDate: new Date(2025, 10, 1),
@@ -275,14 +262,6 @@ export default {
 
           onSuccess: function(result) {
             that.colovalue = result.key;
-            //that.value = result.value;
-            //onSuccess将在点击完成之后回调
-            /*
-        {
-            key: '选项2',
-            value: '234'
-        }
-        */
           },
           onFail: function(err) {}
         });
@@ -292,7 +271,6 @@ export default {
     getStarttime() {
       const that = this;
       var aData = new Date();
-      console.log(aData); //Wed Aug 21 2019 10:00:58 GMT+0800 (中国标准时间)
       var value1 =
         aData.getFullYear() +
         "-" +

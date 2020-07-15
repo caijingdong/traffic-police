@@ -13,6 +13,7 @@
 </template>
 <script>
 import axios from "axios";
+import { LAY_OUT } from "@/api/api";
 export default {
   name: "sousuo",
   data() {
@@ -21,11 +22,7 @@ export default {
   created() {},
   methods: {
     logout() {
-      this.axios({
-        method: "post",
-        url: "/js/a/logout"
-       
-      })
+        LAY_OUT("/js/a/logout")
         .then(res => {
           this.$router.push("/Login");
         })
@@ -36,7 +33,6 @@ export default {
   }
 };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
 .person {
   height: 2.2rem;

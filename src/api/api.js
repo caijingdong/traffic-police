@@ -7,6 +7,7 @@ export function MY_GET(url, params) {
         params
     })
 }
+/*判断民警与辅警*/ 
 export function ID_GET(url) {
     return request({
         method: 'get',
@@ -17,6 +18,21 @@ export function ID_GET(url) {
 export function POLICE_GET_DATA(url) {
     return request({
         method: 'get',
+        url
+    })
+}
+/*请求辅警请假列表信息*/ 
+export function LEAVE_GET_DATA(url,params) {
+    return request({
+        method: 'get',
+        url,
+        params
+    })
+}
+/*登出*/ 
+export function LAY_OUT(url) {
+    return request({
+        method: 'post',
         url
     })
 }
@@ -34,7 +50,7 @@ export function MY_POST_DATA(url, data) {
         data
     })
 }
-
+/*登入账号*/ 
 export function MY_POST_QUERY(url, params) {
     return request({
         method: 'post',

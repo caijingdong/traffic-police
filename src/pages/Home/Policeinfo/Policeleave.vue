@@ -35,28 +35,20 @@
 
       <div class="border"></div>
       <loading v-if="loading" ref="loading"></loading>
-
-      <!--  <div class="no-data" v-if="!travelData || travelData.length === 0">暂无数据</div> -->
     </div>
   </div>
 </template>
 <script >
 // 引入 api
 import loading from "@/components/loading/Loading.vue";
-import { mapMutations } from "vuex";
-
+import { LEAVE_GET_DATA } from "@/api/api";
 import axios from "axios";
-//import { MY_GET_DATA } from "./Person/api/api";
-
-//import * as dd from "dingtalk-jsapi";
 export default {
    components: {
     loading
   },
   created() {
     this.getLeavelist();
-    //this.goDetailLeave()
-    // mock数据
   },
 
   data() {
@@ -75,7 +67,6 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["changeLogin"]),
     getLeavelist() {   
       this.axios({
         method: "get",
@@ -85,44 +76,24 @@ export default {
         }
       })
         .then(res => {
-          //console.log("postData:执行完毕");
-          //console.log(res.data)
           this.leaveList = res.data
           let arr = [] 
           this.leaveList.forEach(element => {
             arr.push(element.user)           
           });
-         this.name = arr[0].userName
-         //this.waitLeave = this.leaveList.length
-         
+         this.name = arr[0].userName         
         })
         .catch(e => {
           this.$toast("list.get fail" );
         });
     },
     goDetailLeave(id){
-/*       this.axios({
-        method:"get",
-        url:"/js/a/ams/takeleave/takeLeave/takeLeaveAudit",
-
-      })
-      .then(res => {
-        console.log(res.data)
-      }) */
       this.$router.push("/Leaveinfo/" + id)
     }
   },
     computed: {
     reversedMessage: function() {
-                
-          
-          //this.name = arr.userName
       return arr;
-      /*       const arr = this.code.filter(item => {
-        if(this.lists.politicsStatusKey == item.dictValue) {
-          return item
-        }
-      }) */
     }
   }
 };

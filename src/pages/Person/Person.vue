@@ -20,7 +20,6 @@
 <script>
 import * as dd from "dingtalk-jsapi";
 import loading from "@/components/loading/Loading.vue";
-import axios from "axios";
 export default {
   name: "HelloWorld",
   data() {

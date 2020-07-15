@@ -71,7 +71,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      personid: ""
+      personid: ""//判断民警身份id
     };
   },
   methods: {
@@ -79,8 +79,6 @@ export default {
       ID_GET("/js/a/ams/takeleave/takeLeave/isPolice")
         .then(res => {
           this.personid = res.data;
-          //console.log(res)
-          //console.log("获取成功" + this.personid);
         })
         .catch(e => {
           this.$toast("info.get fail: " + JSON.stringify(e));

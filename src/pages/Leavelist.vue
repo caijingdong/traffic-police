@@ -1,7 +1,7 @@
 <template>
   <div class="launch">
     <div class="launch-wrapper">
-      <div class="item-wrapper"  v-for="item in leaveList" :key="item.id">
+      <div class="item-wrapper" v-for="item in leaveList" :key="item.id">
         <div class="item">
           <div class="item-img">
             <span class="img">{{name}}</span>
@@ -24,39 +24,33 @@
               <span class="ls">{{item.endTime}}</span>
             </div>
             <div class="info">
-<!--               <p v-if="item.flowStateKey == 4" class="waited">待审核</p>
+              <!--               <p v-if="item.flowStateKey == 4" class="waited">待审核</p>
               <p v-if="item.flowStateKey == 13" class="success">通过</p>              
-              <p v-if="item.flowStateKey == 5" class="closed">驳回</p> -->
-              <p :class="{success:item.flowStateKey == 12,closed:item.flowStateKey == 16,waited:item.flowStateKey == 1}">{{item.flowState}}</p>
+              <p v-if="item.flowStateKey == 5" class="closed">驳回</p>-->
+              <p
+                :class="{success:item.flowStateKey == 12,closed:item.flowStateKey == 16,waited:item.flowStateKey == 1}"
+              >{{item.flowState}}</p>
             </div>
           </div>
         </div>
-       
       </div>
 
       <div class="border"></div>
       <loading v-if="loading" ref="loading"></loading>
-
-      <!--  <div class="no-data" v-if="!travelData || travelData.length === 0">暂无数据</div> -->
     </div>
   </div>
 </template>
 <script >
-// 引入 api
 import loading from "../components/loading/Loading.vue";
 import { mapMutations } from "vuex";
-
 import axios from "axios";
-import { MY_GET_DATA } from "./Person/api/api";
-
-//import * as dd from "dingtalk-jsapi";
 export default {
-   components: {
+  components: {
     loading
   },
   created() {
     this.getLeavelist();
-    this.getinfo()
+    this.getinfo();
     // mock数据
   },
 
@@ -66,32 +60,27 @@ export default {
       travelData: [],
       nowName: {},
       personid: "",
-      leaveList:"",
-      name:"",
+      leaveList: "",
+      name: "",
       loading: false,
-      waitLeave:[]
+      waitLeave: []
     };
   },
   methods: {
     ...mapMutations(["changeLogin"]),
     getLeavelist() {
-      /* MY_GET_DATA("/js/a/ams/takeleave/takeLeave/findData", {"personnelFile.id": this.personid}) */
       this.axios({
         method: "post",
-        url: "/js/a/ams/takeleave/takeLeave/findData",
+        url: "/js/a/ams/takeleave/takeLeave/findData"
       })
         .then(res => {
-          //console.log("postData:执行完毕");
-          console.log(res.data)
-          this.leaveList = res.data.list
-          //console.log(this.leaveList.length)
-          //let waitLeave = []
-          this.waitLeave =  this.leaveList.filter(elem => {
-             if(elem.flowStateKey == 1){
-               return elem
-             }          
+          console.log(res.data);
+          this.leaveList = res.data.list;
+          this.waitLeave = this.leaveList.filter(elem => {
+            if (elem.flowStateKey == 1) {
+              return elem;
+            }
           });
-          console.log(this.waitLeave)
         })
         .catch(e => {
           this.$toast("user.get fail: " + JSON.stringify(e));
@@ -107,28 +96,11 @@ export default {
           if (res.data.code == "0000") {
             //console.log("请求以后的标记");
             let doc = res.data.data;
-             this.name = doc.name
+            this.name = doc.name;
             this.personid = doc.id;
-            console.log(this.name)
+            console.log(this.name);
             this.getLeavelist();
             this.loading = false;
-            /*            // console.log(doc);
-            this.lists = doc;
-            this.office = this.lists.office;
-            //this.officename = this.office.officeName
-            this.info1 = doc.familyMembers;
-            this.record1 = doc.personnelRecords;
-            this.train1 = doc.trainingRecords;
-            this.dada = this.code.filter(item => {
-              if (this.lists.politicsStatusKey == item.dictValue) {
-                return item;
-              }
-            });
-            this.dada = this.dada[0].treeNames;
-            this.getEquepment();
-            //this.code = this.code
-            //console.log(this.code);
-            //console.log(this.record); */
           } else {
             this.$toast("user.get fail: " + JSON.stringify(res));
           }
@@ -148,8 +120,7 @@ p {
   margin: 0;
 }
 .launch {
- 
-  padding-bottom:4rem;
+  padding-bottom: 4rem;
   .launch-wrapper {
     .item-wrapper {
       .item {

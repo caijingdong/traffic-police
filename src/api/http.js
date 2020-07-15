@@ -1,6 +1,6 @@
 import axios from 'axios'
 // const BASE = window.location.host
-const baseUrl = process.env.NODE_ENV === 'production' ? '/jee' : ''
+const baseUrl = process.env.NODE_ENV === 'production' ? '/jee' : 'http://192.168.1.249:8080'
 const service = axios.create({
   timeout: 2000000,
   baseURL: baseUrl,

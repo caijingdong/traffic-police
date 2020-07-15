@@ -3,7 +3,6 @@
     <div class="title">辅警信息</div>
     <div class="police-list">
       <ul class="item-list">
-        <!--  <li @click="$router.push({ name: 'Policeleave' })">辅警小张<span>待审批<img style="display:block;" src="../assets/row.png" alt /></span></li> -->
         <li v-for="item in policeData" :key="item.id">
           <div class="item-top">
             <div class="head-left">
@@ -39,8 +38,8 @@
   </div>
 </template>
 <script>
-import qs from "qs";
-import { formatDate } from "../js/format.js";
+//import qs from "qs";
+//import { formatDate } from "../js/format.js";
 import { POLICE_GET_DATA } from "@/api/api";
 export default {
   name: "HelloWorld",
@@ -54,7 +53,6 @@ export default {
       POLICE_GET_DATA(
         "/js/a/ams/personnelfile/personnelFile/auxiliaryPoliceListData"
       ).then(res => {
-        //console.log(res.data)
         this.policeData = res.data;
       });
     },
@@ -67,7 +65,6 @@ export default {
   },
   created() {
     this.getccNameInfo();
-    //this.getLeavelist()
   },
   mounted() {},
 
@@ -98,28 +95,6 @@ export default {
   }
   .police-list {
     ul {
-      /*             li{
-                height:2rem;
-                line-height:2rem;
-                font-size:0.7rem;
-                padding-left:0.6rem;
-                border-bottom: 1px solid #ebebeb;
-                color:black;
-                span{
-                    float:right;
-                    width:3rem;
-                    padding-right:0.6rem;
-                    line-height:2rem;
-                    
-                   
-                    img{
-                        display:block;
-                        width:0.4rem;
-                        float:right;
-                        margin-top:0.7rem;
-                    }
-                }
-            } */
       .item-top {
         border-bottom: 1px solid #f0f0f0;
         height: 3.6rem;

@@ -451,12 +451,10 @@ export default {
         .then(res => {
           if (res.data.code == "0000") {
             let doc = res.data.data;
-            console.log(doc)
             this.personid = doc.id;
             this.lists = doc;
             this.office = this.lists.office;
             this.familyInfo = doc.familyMembers;
-            //console.log(this.familyinfo)
             this.userRecord = doc.personnelRecords;
             this.userTrain = doc.trainingRecords;
             this.equipments = doc.equipmentList;
