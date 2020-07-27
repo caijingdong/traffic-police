@@ -11,9 +11,9 @@
       ref="resize"
       title-style="78px"
     >
-      <van-tab title="工资详情">
-        <van-tabs v-model="activeName" color="#3270e1" sticky>
-          <van-tab
+      <van-tab title="工资详情" >         
+        <van-tabs v-if="doc.length > 0" v-model="activeName" color="#3270e1" sticky>
+          <van-tab           
             class="list"
             :name="item.c"
             v-for="(item,indexs) in doc"
@@ -73,27 +73,32 @@
               <span>{{item.situation}}</span>
             </li>
           </van-tab>
+          
         </van-tabs>
+        <EmptyPage v-if="show"></EmptyPage>
       </van-tab>
     </van-tabs>
     <p>{{doc.id}}</p>
   </div>
 </template>
 <script>
+import EmptyPage from "@/components/EmptyPage/EmptyPage.vue";
 export default {
   name: "HelloWorld",
+    components: {
+    EmptyPage
+  },
   data() {
     return {
       active: "",
       activeName: "123",
-      active1: "",
-      active2: "2",
       currentTime: "12:00",
       message: "",
       value: "",
       doc: "",
       newslist: {},
-      lists: []
+      lists: [],
+      show:false
     };
   },
   methods: {
@@ -106,8 +111,10 @@ export default {
           if (res.data.code == "0000") {
             let doc = res.data.data;
             this.doc = doc;
+            console.log(this.doc)
           } else {
-            this.$toast("获取信息失败" + JSON.stringify(res));
+            this.show = true
+            
           }
         })
         .catch(e => {

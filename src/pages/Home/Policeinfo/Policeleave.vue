@@ -1,7 +1,7 @@
 <template>
   <div class="launch">
     <div class="launch-wrapper">
-      <div class="item-wrapper" @click="goDetailLeave(item.id)"  v-for="item in leaveList" :key="item.id">
+      <div class="item-wrapper" v-if="leaveList.length > 0" @click="goDetailLeave(item.id)"  v-for="item in leaveList" :key="item.id">
         <div  class="item">
           <div class="item-img">
             <span class="img">{{name}}</span>
@@ -35,17 +35,19 @@
 
       <div class="border"></div>
       <loading v-if="loading" ref="loading"></loading>
+      <EmptyPage v-if="leaveList.length == 0" ></EmptyPage>
     </div>
   </div>
 </template>
 <script >
-// 引入 api
 import loading from "@/components/loading/Loading.vue";
+import EmptyPage from "@/components/EmptyPage/EmptyPage.vue";
 import { LEAVE_GET_DATA } from "@/api/api";
 import axios from "axios";
 export default {
    components: {
-    loading
+    loading,
+    EmptyPage
   },
   created() {
     this.getLeavelist();
@@ -84,7 +86,7 @@ export default {
          this.name = arr[0].userName         
         })
         .catch(e => {
-          this.$toast("list.get fail" );
+          
         });
     },
     goDetailLeave(id){
@@ -92,9 +94,6 @@ export default {
     }
   },
     computed: {
-    reversedMessage: function() {
-      return arr;
-    }
   }
 };
 </script>

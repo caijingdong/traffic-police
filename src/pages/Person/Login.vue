@@ -17,7 +17,6 @@
     </div>
     <!--End密码输入框-->
     <div class="button" @click.prevent="login">登录</div>
-
     <div class="footer" @click.prevent="noLogin">
       钉钉免登
       <img class="jiantou" src="./images/jiantou.png" alt />

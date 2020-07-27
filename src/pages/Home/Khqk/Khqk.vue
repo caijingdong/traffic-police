@@ -11,73 +11,66 @@
       ref="resize"
     >
       <van-tab title="考勤情况">
-        <van-tabs v-model="activeName" color="#3270e1" sticky>
+        <van-tabs v-if="assess1.length > 0" v-model="activeName" color="#3270e1" sticky>
           <van-tab
             class="list"
             v-for="(assess,indexs) in assess1"
             :title="assess.year"
             :key="indexs"
           >
-           <!--  <ul v-for="assess in assess1" :key="assess.id"> -->
-              <li class="item-list border">
-                机构名称
-                <span>{{assess.officeName}}</span>
-              </li>
-              <li class="item-list">
-                年份
-                <span>{{assess.year}}</span>
-              </li>
-              <li class="item-list">
-                评定等级
-                <span>{{userdata}}</span>
-              </li>
+            <li class="item-list border">
+              机构名称
+              <span>{{assess.officeName}}</span>
+            </li>
+            <li class="item-list">
+              年份
+              <span>{{assess.year}}</span>
+            </li>
+            <li class="item-list">
+              评定等级
+              <span>{{assess.ratingValue}}</span>
+            </li>
 
-              <li class="item-list">
-                1月
-                <span></span>
-              </li>
-              <li class="item-list">
-                2月
-                <span></span>
-              </li>
-              <li class="item-list">
-                3月
-                <span></span>
-              </li>
-              <li class="item-list">
-                4月
-                <span></span>
-              </li>
-           <!--  </ul> -->
-           
+            <li class="item-list">
+              1月
+              <span></span>
+            </li>
+            <li class="item-list">
+              2月
+              <span></span>
+            </li>
+            <li class="item-list">
+              3月
+              <span></span>
+            </li>
+            <li class="item-list">
+              4月
+              <span></span>
+            </li>
+            <!--  </ul> -->
           </van-tab>
         </van-tabs>
+        <EmptyPage v-if="show" >111</EmptyPage>
       </van-tab>
     </van-tabs>
   </div>
 </template>
 <script>
 import qs from "qs";
+import EmptyPage from "@/components/EmptyPage/EmptyPage.vue";
 export default {
   name: "HelloWorld",
+  components: {
+    EmptyPage
+  },
   data() {
     return {
       active: "",
       activeName: "123",
-      active1: "",
-      active2: "2",
-      currentTime: "12:00",
-      message: "",
-      value: "",
       officeid: "",
-      lists: this.lists,
-      endtime: "",
-      business: "",
       assess1: "",
-      office: "",
-      year: "",
-      userdata: "",
-      code: {}
+      code: {},
+      show:false
     };
   },
   methods: {
@@ -87,50 +80,36 @@ export default {
         url: "/js/a/ams/personnelfile/personnelFile/getCurrentUserPersonnelFile"
       })
         .then(res => {
-        
-          this.lists = res.data.data.name;
-          this.personid = res.data.data.id;
-          let office = res.data.data.office;
-          this.officeid = office.id;
-          //console.log("getinfo方法执行", this.lists);
-          this.getview();
-          this.getmonth();
+          if (res.data.code === "0000") {
+            this.personid = res.data.data.id;
+          }else{
+           this.show = true
+          }
         })
-        .catch(err => {
-           this.$toast("获取信息失败" + JSON.stringify(err));
-        });
+        .catch(err => {});
     },
     getview() {
-      //console.log(this.lists, "getView-Method");
       this.axios({
         method: "get",
-        url: "/js/a/ams/assessmentresult/assessmentResult/mobileData ",
+        url: "/js/a/ams/assessmentresult/assessmentResult/mobileData "
       })
         .then(res => {
-        if (res.status == 200) {
-          console.log(res.data)
-           this.assess1 = res.data.data;
-           
-          /* let doc = res.data.list[0];
-          this.office = doc.office; */
-          this.getmonth();
-          
-           this.userdata = this.code.filter(item => {
-            if (this.assess1[0].rating == item.dictValue) {
-              return item;
-            }
-          });
-          console.log(this.assess1)
-          this.userdata = this.userdata[0].treeNames; 
-        }else{
-          
-        }
-         
-         
-          
+          if (res.data.code === "0000") {
+            this.assess1 = res.data.data;
+            console.log(this.assess1)
+            //this.getmonth();
+/*             this.userdata = this.code.filter(item => {
+              if (this.assess1[0].rating == item.dictValue) {
+                return item;
+              }
+            });
+            this.userdata = this.userdata[0].treeNames; */
+          } else {
+            this.show = true
+          }
         })
         .catch(e => {
-           // this.$toast("获取失败" + JSON.stringify(e));
+          // this.$toast("获取失败" + JSON.stringify(e));
         });
     },
     getValueobj() {
@@ -149,14 +128,12 @@ export default {
       })
         .then(res => {
           if (res.status == 200) {
-          this.code = res.data.data[0];
-          //console.log(this.code)
-          }else{
-
+            this.code = res.data.data[0];
+          } else {
           }
         })
         .catch(err => {
-           this.$toast("获取失败" + JSON.stringify(err));
+         
         });
     },
     getmonth() {
@@ -170,16 +147,17 @@ export default {
         }
       })
         .then(res => {
-          //console.log(res.data);
+          console.log(res.data);
         })
         .catch(e => {
-           this.$toast("获取失败" + JSON.stringify(err));
+          
         });
     }
   },
   created() {
-    this.getinfo();
-    this.getValueobj();
+    //this.getinfo();
+    //this.getValueobj();
+    this.getview();
   },
   computed: {
     reversedMessage: function() {

@@ -310,7 +310,6 @@
             :key="train.id"
           >
             <ul>
-              <!-- <li class="item-record tebie" style="font-weight:bold">装备详情</li> -->
               <li class="item-record">
                 项目
                 <span>{{train.project}}</span>
@@ -465,11 +464,11 @@ export default {
             });
             this.dada = this.dada[0].treeNames;
           } else {
-            this.$toast("user.get fail: " + JSON.stringify(res));
+           
           }
         })
         .catch(e => {
-          this.$toast("info.get fail: " + JSON.stringify(e));
+          this.$toast("暂无数据");
         });
     },
     getEquepment() {
@@ -507,9 +506,7 @@ export default {
         }
       })
         .then(res => {
-          this.code = res.data.data[2];
-          //this.code1 = res.data.data[3];
-          //console.log(this.code1);
+          this.code = res.data.data[2];//获取字典
         })
         .catch(err => {
           this.$toast("valueobj.get fail: " + JSON.stringify(err));
@@ -517,10 +514,8 @@ export default {
     }
   },
   created() {
-    //this.getNewlist()
     this.getinfo();
     this.getValueobj();
-    //this.getEquepment();
   },
   mounted() {},
   filters: {
@@ -551,11 +546,6 @@ export default {
     reversedMessage: function() {
       // `this` 指向 vm 实例
       return this.office.officeName;
-      /*       const arr = this.code.filter(item => {
-        if(this.lists.politicsStatusKey == item.dictValue) {
-          return item
-        }
-      }) */
     }
   }
 };

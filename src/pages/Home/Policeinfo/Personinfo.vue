@@ -424,7 +424,7 @@ export default {
       dada: "",
       equiptype: "",
       office: {},
-     // office1: {},
+      // office1: {},
       equipments: {},
       personid: "",
       officename: "",
@@ -464,42 +464,42 @@ export default {
         });
     },
     getDetailinfo() {
-        const params = { id: this.id };
-        PERSON_GET_DATA("/js/a/ams/personnelfile/personnelFile/getAuxiliaryPolice",params)
-        .then(res => {
-          if (res.data.code == "0000") {
-            //console.log(res.data)
-            let doc = res.data.data;
-            this.personid = doc.id;
-            this.lists = doc;
-            this.office = this.lists.office;
-            this.familyInfo = doc.familyMembers;
-            this.userRecord = doc.personnelRecords;
-            this.userTrain = doc.trainingRecords;
-            this.equipments = doc.equipmentList;
-            let arr = []
-            this.equipments.forEach(element => {
-              arr.push(element.office)
-
-              
-            });
-            //console.log(arr)
-            let max = arr[0]
-            for (let i = 0; i < arr.length; i++) {
-              if (max < arr[i]) {
-              max = arr[i]
+      const params = { id: this.id };
+      PERSON_GET_DATA(
+        "/js/a/ams/personnelfile/personnelFile/getAuxiliaryPolice",
+        params
+      ).then(res => {
+        if (res.data.code == "0000") {
+          //console.log(res.data)
+          let doc = res.data.data;
+          this.personid = doc.id;
+          this.lists = doc;
+          this.office = this.lists.office;
+          this.familyInfo = doc.familyMembers;
+          this.userRecord = doc.personnelRecords;
+          this.userTrain = doc.trainingRecords;
+          this.equipments = doc.equipmentList;
+          let arr = [];
+          this.equipments.forEach(element => {
+            arr.push(element.office);
+          });
+          //console.log(arr)
+          let max = arr[0];
+          for (let i = 0; i < arr.length; i++) {
+            if (max < arr[i]) {
+              max = arr[i];
+            }
           }
+          this.dada = this.code.filter(item => {
+            if (this.lists.politicsStatusKey == item.dictValue) {
+              return item;
+            }
+          });
+          this.dada = this.dada[0].treeNames;
+        } else {
+          this.$toast("暂无信息");
         }
-            this.dada = this.code.filter(item => {
-              if (this.lists.politicsStatusKey == item.dictValue) {
-                return item;
-              }
-            });
-            this.dada = this.dada[0].treeNames;
-          } else {
-            this.$toast("获取辅警信息失败" );
-          }
-        });
+      });
     }
   },
   created() {
@@ -536,19 +536,15 @@ export default {
 
   computed: {
     //reversedMessage: function() {
-      //return this.office.officeName;
-      /*       const arr = this.code.filter(item => {
+    //return this.office.officeName;
+    /*       const arr = this.code.filter(item => {
         if(this.lists.politicsStatusKey == item.dictValue) {
           return item
         }
       }) */
-   // },
-    getinfo:function(){
-      this.equipments.forEach(element => {
-
-              
-            });
-
+    // },
+    getinfo: function() {
+      this.equipments.forEach(element => {});
     }
   }
 };

@@ -7,10 +7,7 @@ import Person from '@/pages/Person/Person'
 import Login from '@/pages/Person/Login'
 import Layout from '@/pages/Person/Layout'
 import Baseinfo from '@/pages/Home/Baseinfo/Baseinfo'
-import Endyear from '@/pages/Home/Endyear/Endyear'
-import Search from '@/pages/Home/Search/Search'
 import Wages from '@/pages/Home/Wages/Wages'
-import Qingwu from '@/pages/Home/Qingwu/Qingwu'
 import Leave from '@/pages/Home/Leave/Leave'
 import Khqk from '@/pages/Home/Khqk/Khqk'
 import Policeinfo from '@/pages/Home/Policeinfo/Policeinfo'
@@ -64,24 +61,6 @@ export default new Router({
       path: '/Wages',
       component: Wages,
       name: 'Wages',
-      
-    },
-    {
-      path: '/Endyear',
-      component: Endyear,
-      name: 'Endyear',
-      
-    },
-    {
-      path: '/Search',
-      component: Search,
-      name: 'Search',
-      
-    },
-    {
-      path: '/Qingwu',
-      component: Qingwu,
-      name: 'Qingwu',
       
     },
     {

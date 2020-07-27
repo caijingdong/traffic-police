@@ -1,14 +1,14 @@
 <template>
   <div class="launch">
     <div class="launch-wrapper">
-      <div class="item-wrapper"  >
-        <div class="item">         
+      <div class="item-wrapper">
+        <div class="item">
           <div class="item-content">
             <div class="block">
-              <span class="lt">请假类型： </span>
+              <span class="lt">请假类型：</span>
               <span class="ls">{{leaveinfo.leaveTypeValue}}</span>
             </div>
-           
+
             <div class="block">
               <span class="lt">开始时间：</span>
               <span class="ls">{{leaveinfo.startTime}}</span>
@@ -17,7 +17,7 @@
               <span class="lt">结束时间：</span>
               <span class="ls">{{leaveinfo.endTime}}</span>
             </div>
-             <div class="block">
+            <div class="block">
               <span class="lt">请假时长：</span>
               <span class="ls">{{leaveinfo.leaveDays}}</span>
             </div>
@@ -25,102 +25,99 @@
               <span class="lt">请假理由：</span>
               <span class="ls">{{leaveinfo.remarks}}</span>
             </div>
-                        <div class="block">
+            <div class="block">
               <span class="lt">附件：</span>
-              <ul><li @click="preView" class="pictures" v-for="item in imgs" :key="item"><img :src="imgurl + item" /></li></ul>
-
+              <ul>
+                <li @click="preView" class="pictures" v-for="item in imgs" :key="item">
+                  <img :src="imgurl + item" />
+                </li>
+              </ul>
             </div>
-
           </div>
         </div>
-       
       </div>
 
-      <div class="button" @click="passData(12)">通过</div> 
+      <div class="button" @click="passData(12)">通过</div>
       <div class="back" @click="passData(2)">驳回</div>
     </div>
   </div>
 </template>
 <script >
 import axios from "axios";
-import { pathway} from "@/api/common";
+import { pathway } from "@/api/common";
+import { ImagePreview } from 'vant';
 export default {
-   components: {    
+  components: {
+     [ImagePreview.Component.name]: ImagePreview.Component,
   },
   created() {
     //this.getLeavelist();
-    this.getLeaveinfo()
+    this.getLeaveinfo();
   },
   data() {
     return {
+      show:true,
       ty: 1,
       travelData: [],
       nowName: {},
       personid: "",
-      leaveinfo:"",
-      name:"",
+      leaveinfo: "",
+      name: "",
       id: this.$route.params.id,
-      imgs:[],
-      imgurl:"http://192.168.1.249:8080",
+      imgs: [],
+      imgurl: "http://192.168.1.243:8080"
     };
   },
   methods: {
-    getLeaveinfo() {   
-      const params = {id:this.id} 
+    onChange(index) {
+      this.index = index;
+    },
+    getLeaveinfo() {
+      const params = { id: this.id };
       this.axios({
         method: "post",
         url: "/js/a/ams/takeleave/takeLeave/personalListData",
         params
       })
         .then(res => {
-          //console.log("成功请求")
-          //const {success} = res.data 
-          this.leaveinfo = res.data.list[0]
-          console.log(this.leaveinfo)
-          this.imgs = [].concat(this.leaveinfo.imgUrl.split(','));
-          let poped = this.imgs.pop()
-          //console.log(this.imgs)
-
+          this.leaveinfo = res.data.list[0];
+          this.imgs = [].concat(this.leaveinfo.imgUrl.split(","));
+          let poped = this.imgs.pop();
+          console.log(this.imgs)
         })
         .catch(e => {
           this.$toast("user.get fail1: " + JSON.stringify(e));
         });
     },
-    passData(flowStateKey){
-      const params = {id:this.id,flowStateKey}
+    passData(flowStateKey) {
+      const params = { id: this.id, flowStateKey };
       this.axios({
         method: "post",
         url: "/js/a/ams/takeleave/takeLeave/takeLeaveAudit",
         params
       })
-      .then(res => {
-        if(flowStateKey === 12){
-          this.$toast("审核通过" );
-          this.$router.push({ name: "Policeinfo" });
-        }
-        else if(flowStateKey === 2){
-          this.$toast("驳回成功" );
-          this.$router.push({ name: "Policeinfo" });
-        }
-
+        .then(res => {
+          if (flowStateKey === 12) {
+            this.$toast("审核通过");
+            this.$router.push({ name: "Policeinfo" });
+          } else if (flowStateKey === 2) {
+            this.$toast("驳回成功");
+            this.$router.push({ name: "Policeinfo" });
+          }
         })
         .catch(e => {
           this.$toast("user.get fail1: " + JSON.stringify(e));
         });
-      
-
     },
-    preView(){
-
-    }
+    preView() {}
   }
 };
 </script>
 <style scoped lang="less">
-.pictures{
-  width:100px;
-  img{
-    width:100%;
+.pictures {
+  width: 100px;
+  img {
+    width: 100%;
   }
 }
 h1,
@@ -130,15 +127,13 @@ p {
   margin: 0;
 }
 .launch {
- 
-  padding-bottom:4rem;
+  padding-bottom: 4rem;
   .launch-wrapper {
     .item-wrapper {
       .item {
-
         padding: 0.6rem;
         display: flex;
-        margin-bottom:2rem;
+        margin-bottom: 2rem;
         .item-img {
           width: 1rem;
           flex: 0, 0, 15px;
@@ -156,37 +151,16 @@ p {
         }
         .item-content {
           flex: 1;
-/*           .title-wrapper {
-            display: flex;
-            padding-bottom: 0.3rem;
-            .title {
-              flex: 1;
-              font-size: 0.6rem;
-              line-height: 0.8rem;
-              text-align: left;
-              margin-left: 2rem;
-            }
-            .timer {
-              display: flex;
-              flex: 0, 0, 0;
-              text-align: right;
-              color: #999;
-              width: 2rem;
-              padding-top: 0.1rem;
-              font-size: 0.5rem;
-            }
-          } */
           .block {
             display: block;
             font-size: 0.6rem;
             line-height: 2rem;
             text-align: left;
-            
             color: #888;
-            border-bottom:1px solid #e5e5e5;
+            border-bottom: 1px solid #e5e5e5;
             .lt {
               flex: 0, 0, 60px;
-              color:black;
+              color: black;
             }
             .ls {
               flex: 1;
@@ -214,32 +188,29 @@ p {
     }
   }
   .button {
- bottom:60px;
- width:6rem;
- height:2rem;
- line-height:2rem;
- text-align: center;
- font-size:0.8rem;
- background-color: #1a96dd;
- color:white;
- border-radius: 0.4rem;
- float:left;
- margin:0 1.3rem;
+    bottom: 60px;
+    width: 6rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    background-color: #1a96dd;
+    color: white;
+    border-radius: 0.4rem;
+    float: left;
+    margin: 0 1.3rem;
+  }
+  .back {
+    bottom: 60px;
+    width: 6rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    background-color: #df1b40;
+    color: white;
+    border-radius: 0.4rem;
+    float: left;
+  }
 }
-.back {
- bottom:60px;
- width:6rem;
- height:2rem;
- line-height:2rem;
- text-align: center;
- font-size:0.8rem;
- background-color: #df1b40;
- color:white;
- border-radius: 0.4rem;
- float:left;
- 
-}
-}
-
-
 </style>
