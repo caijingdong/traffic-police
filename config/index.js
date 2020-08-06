@@ -22,7 +22,6 @@ module.exports = {
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
     devtool: 'cheap-module-eval-source-map',
     cacheBusting: true,
-
     cssSourceMap: true
   },
 

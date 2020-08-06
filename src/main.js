@@ -9,8 +9,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 import axios from 'axios'
-//axios.defaults.baseURL = '' 
-axios.defaults.baseURL = 'http://192.168.1.243:8080'
+axios.defaults.baseURL = '' 
+//axios.defaults.baseURL = 'http://192.168.1.114:8080'
 //Vue.axios.options.emulateJSON = true;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.defaults.withCredentials = true //让ajax携带cookie

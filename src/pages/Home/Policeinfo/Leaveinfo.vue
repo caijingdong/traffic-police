@@ -65,7 +65,7 @@ export default {
       name: "",
       id: this.$route.params.id,
       imgs: [],
-      imgurl: "http://192.168.1.243:8080"
+      imgurl: "http://115.223.34.119:9095"
     };
   },
   methods: {

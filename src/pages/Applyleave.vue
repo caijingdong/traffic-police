@@ -47,8 +47,8 @@
       />
     </van-cell-group>
     <van-cell-group>
-      <van-field
-        v-model="days"
+      <van-field        
+       :value="dateLong"
         type="number"
         label="时长(天)"
         placeholder="请输入请假天数"
@@ -92,9 +92,9 @@
       />
     </van-cell-group>
     <div class="anniu" @click="postData">
-      <p>提交</p>
-      <loading v-if="loading" ref="loading"></loading>
+      <p>提交</p>     
     </div>
+     <loading v-show="loading" ref="loading"></loading>
   </div>
 </template>
 
@@ -148,8 +148,26 @@ export default {
       params: ""
     };
   },
+  watch: {
+/*     startTime(value) {
+      if (this.endTime !== '请选择时间') {
+        let day = Date.parse(this.endTime) - Date.parse(value)
+        day = Math.floor(day / 24 / 60 / 60 / 1000) * 100 / 100
+        this.days = day
+      }
+    },
+    endTime(value) {
+       if (this.startTime !== '请选择时间') {
+        let day = Date.parse(value ) - Date.parse(this.startTime)
+        day = Math.floor(day / 24 / 60 / 60 / 1000) * 100 / 100
+        this.days = day
+      }
+    } */
+  },
   computed: {
     dateLong() {
+      console.log("计算成功")
+      
       if (this.startTime && this.endTime) {
         let oDate1 = this.startTime.substring(0, 10).split("-");
         let oDate2 = this.endTime.substring(0, 10).split("-");
@@ -159,11 +177,15 @@ export default {
         if (strDateE - strDateS < 0) {
           this.endTime = "";
           this.$refs.popup.show("时间选择错误");
-        } else {
+        }else if(this.startTime == "请选择时间" || this.endTime == "请选择时间") {
+          return "请输入请假天数"
+        }
+        else {
           let iDays = parseInt(
             Math.abs(strDateS - strDateE) / 1000 / 60 / 60 / 24
           );
           return iDays + 1;
+          console.log("计算成功")
         }
       } else {
         return "";

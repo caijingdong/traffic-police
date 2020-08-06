@@ -18,8 +18,11 @@ import {
   Button,
   Collapse,
   CollapseItem,
-  Switch
+  Switch,
+  ImagePreview
 } from 'vant';
+
+//import { ImagePreview } from 'vant';
 Vue.use(Toast);
 Vue.use(Popup);
 Vue.use(Picker);
@@ -38,4 +41,6 @@ Vue.use(Button);
 Vue.use(Collapse);
 Vue.use(CollapseItem);
 Vue.use(Switch);
+Vue.use(ImagePreview);
+
 
