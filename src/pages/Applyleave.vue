@@ -47,8 +47,8 @@
       />
     </van-cell-group>
     <van-cell-group>
-      <van-field        
-       :value="dateLong"
+      <van-field
+        v-model="days"
         type="number"
         label="时长(天)"
         placeholder="请输入请假天数"
@@ -78,12 +78,13 @@
         label="附件"
         size="large"
         style="border:none;margin-bottom:0.4rem"
-        label-align="left"      
+        label-align="left"
+        @click="getLeave"
       />
 
       <van-uploader
         style="margin-left:14px"
-        multiple 
+        multiple
         v-model="fileList"
         :after-read="afterRead"
         :max-count="countIndex"
@@ -92,9 +93,9 @@
       />
     </van-cell-group>
     <div class="anniu" @click="postData">
-      <p>提交</p>     
+      <p>提交{{getLeave}}</p>
     </div>
-     <loading v-show="loading" ref="loading"></loading>
+    <loading v-show="loading" ref="loading"></loading>
   </div>
 </template>
 
@@ -103,11 +104,12 @@ import * as dd from "dingtalk-jsapi";
 import axios from "axios";
 import { Toast } from "vant";
 import { formatDate } from "./Home/js/format.js";
+import { getLeave ,daysBetween,gDate} from "./Home/js/apply.js";
 import loading from "../components/loading/Loading.vue";
 export default {
   name: "Applyleave",
   components: {
-    loading
+    loading,
   },
   data() {
     return {
@@ -118,7 +120,7 @@ export default {
         message: [],
         annualLeaveRemaining: null,
         leaveDays: null,
-        file: null
+        file: null,
       },
       config: "",
       isLoadingShow: true,
@@ -145,11 +147,11 @@ export default {
       countIndex: 9, // 可选图片剩余的数量
       datas: {},
       files: [],
-      params: ""
+      params: "",
     };
   },
   watch: {
-/*     startTime(value) {
+    /*     startTime(value) {
       if (this.endTime !== '请选择时间') {
         let day = Date.parse(this.endTime) - Date.parse(value)
         day = Math.floor(day / 24 / 60 / 60 / 1000) * 100 / 100
@@ -166,8 +168,6 @@ export default {
   },
   computed: {
     dateLong() {
-      console.log("计算成功")
-      
       if (this.startTime && this.endTime) {
         let oDate1 = this.startTime.substring(0, 10).split("-");
         let oDate2 = this.endTime.substring(0, 10).split("-");
@@ -177,20 +177,23 @@ export default {
         if (strDateE - strDateS < 0) {
           this.endTime = "";
           this.$refs.popup.show("时间选择错误");
-        }else if(this.startTime == "请选择时间" || this.endTime == "请选择时间") {
-          return "请输入请假天数"
-        }
-        else {
+        } else if (
+          this.startTime == "请选择时间" ||
+          this.endTime == "请选择时间"
+        ) {
+          return "请输入请假天数";
+        } else {
           let iDays = parseInt(
             Math.abs(strDateS - strDateE) / 1000 / 60 / 60 / 24
           );
           return iDays + 1;
-          console.log("计算成功")
+          console.log("计算成功");
         }
       } else {
         return "";
       }
-    }
+    },
+
   },
   methods: {
     onOversize(file) {
@@ -213,7 +216,7 @@ export default {
         annualLeaveRemaining: this.leaveYear,
         annualLeaveTotal: this.hdYear,
         leaveDays: this.days,
-        haYear: this.hdYear
+        haYear: this.hdYear,
       };
       let config = null;
       let datas = null;
@@ -237,58 +240,58 @@ export default {
         this.datas = formData;
         //console.log("datas:" + this.datas);
         config = {
-          headers: { "Content-Type": "multipart/form-data" }
+          headers: { "Content-Type": "multipart/form-data" },
         };
         this.config = config;
       } else {
         this.datas = tableParams;
         this.datas = Qs.stringify(datas);
         config = {
-          headers: { "Content-Type": "application/x-www-form-urlencoded" }
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
         }; //处理参数
         this.config = config;
       }
     },
     getBusiness() {
       const that = this;
-      dd.ready(function() {
+      dd.ready(function () {
         dd.biz.util.chosen({
           source: [
             {
               key: "年休假", //显示文本
-              value: "123" //值，
+              value: "123", //值，
             },
             {
               key: "病假", //显示文本
-              value: "123" //值，
+              value: "123", //值，
             },
             {
               key: "事假",
-              value: "234"
+              value: "234",
             },
             {
               key: "婚假",
-              value: "234"
+              value: "234",
             },
             {
               key: "产假",
-              value: "234"
+              value: "234",
             },
             {
               key: "护理假", //显示文本
-              value: "123" //值，
+              value: "123", //值，
             },
             {
               key: "丧假",
-              value: "234"
-            }
+              value: "234",
+            },
           ],
           selectedKey: "年休假",
 
-          onSuccess: function(result) {
+          onSuccess: function (result) {
             that.colovalue = result.key;
           },
-          onFail: function(err) {}
+          onFail: function (err) {},
         });
       });
     },
@@ -306,16 +309,16 @@ export default {
         aData.getHours() +
         ":" +
         aData.getMinutes();
-      dd.ready(function() {
+      dd.ready(function () {
         dd.biz.util.datetimepicker({
           format: "yyyy-MM-dd HH:mm",
           value: value1,
           //默认显示
-          onSuccess: function(result) {
+          onSuccess: function (result) {
             that.startTime = result.value;
             // alert(that.value)
           },
-          onFail: function(err) {}
+          onFail: function (err) {},
         });
       });
     },
@@ -332,28 +335,28 @@ export default {
         aData.getHours() +
         ":" +
         aData.getMinutes();
-      dd.ready(function() {
+      dd.ready(function () {
         dd.biz.util.datetimepicker({
           format: "yyyy-MM-dd HH:mm",
           value: value2, //默认显示
-          onSuccess: function(result) {
+          onSuccess: function (result) {
             //onSuccess将在点击完成之后回调
             //alert(JSON.stringify(result))
 
             that.endTime = result.value;
             //alert(that.value)
           },
-          onFail: function(err) {}
+          onFail: function (err) {},
         });
       });
     },
 
     getType() {
-      dd.ready(function() {
+      dd.ready(function () {
         dd.biz.calendar.chooseInterval({
           defaultStart: 1494415396228,
           defaultEnd: 1494415396228,
-          onSuccess: function(result) {
+          onSuccess: function (result) {
             //onSuccess将在点击确定之后回调
             /*{
             start: 1514908800000,
@@ -362,7 +365,7 @@ export default {
         }
         */
           },
-          onFail: function(err) {}
+          onFail: function (err) {},
         });
       });
     },
@@ -402,10 +405,10 @@ export default {
         this.axios({
           method: "post",
           url: "/js/a/ams/takeleave/takeLeave/saveLeave",
-          data: this.params
+          data: this.params,
           // config:this.config
         })
-          .then(res => {
+          .then((res) => {
             this.loading = false;
             if (res.status == 200) {
               this.$toast("提交成功");
@@ -414,7 +417,7 @@ export default {
               this.$toast("请假失败" + JSON.stringify(res.message));
             }
           })
-          .catch(e => {
+          .catch((e) => {
             this.$toast("请假失败" + JSON.stringify(e));
             // console.log("error", e);
           });
@@ -423,9 +426,9 @@ export default {
         this.axios({
           method: "post",
           url: "/js/a/ams/takeleave/takeLeave/saveLeave",
-          data: this.datas
+          data: this.datas,
         })
-          .then(res => {
+          .then((res) => {
             //console.log("sucess", res);
             this.loading = false;
             if (res.status == 200) {
@@ -435,7 +438,7 @@ export default {
               this.$toast("请假失败" + JSON.stringify(res.message));
             }
           })
-          .catch(e => {
+          .catch((e) => {
             this.$toast("请假失败" + JSON.stringify(e));
             //console.log("error", e);
           });
@@ -444,15 +447,80 @@ export default {
     getHdyear() {
       this.axios({
         method: "get",
-        url: "/js/a/ams/takeleave/takeLeave/annualLeave"
-      }).then(res => {
+        url: "/js/a/ams/takeleave/takeLeave/annualLeave",
+      }).then((res) => {
         this.hdYear = res.data.annualLeaveTotal;
         this.leaveYear = res.data.annualLeaveRemaining;
       });
-    }
+    },
+      getLeave() {         
+      var startTime = this.startTime.replace(/-/g, "/");
+      var beginArr = startTime.split(" ");
+
+      var beginMonth = parseInt(beginArr[0].split("/")[1]);
+      //console.log(beginMonth)
+      var beginDay = parseInt(beginArr[0].split("/")[2]);
+      var beginHours = parseInt(beginArr[1].split(":")[0]);
+      var beginMin = parseInt(beginArr[1].split(":")[1]);
+      var beginHoursMin = beginHours + beginMin / 60;
+      //console.log(beginHoursMin)
+      var endTime = this.endTime.replace(/-/g, "/");
+      var endArr = endTime.split(" ");
+      var endMonth = parseInt(endArr[0].split("/")[1]);
+      var endDay = parseInt(endArr[0].split("/")[2]);
+      var endHours = parseInt(endArr[1].split(":")[0]);
+      var endMin = parseInt(endArr[1].split(":")[1]);
+      var endHoursMin = endHours + endMin / 60;
+      console.log(endHoursMin)
+      //如果beginHoursMin时间小于上班时间都算上班时间
+      var stWorkTime = 8.5
+      var enWrokTime = 17.5
+      var freeTimeMon = 11.5
+      var freeTimeAft = 14
+	if(beginHoursMin <= stWorkTime) {
+		beginHoursMin = stWorkTime;
+	}
+	//如果endHoursMin时间大于上班时间都算下班时间
+	if(endHoursMin >= enWrokTime) {
+		endHoursMin = enWrokTime;
+	}
+	//如果endHoursMin时间小于上班时间都算下班时间
+	if(endHoursMin <= stWorkTime) {
+		endHoursMin = stWorkTime;
+	}
+  //如果结束时间在freeTimeMon和freeTimeAft之间都算freeTimeMon
+  var isFreeTime = true;
+	if(isFreeTime == true) {
+		if(endHoursMin >= freeTimeMon && endHoursMin <= freeTimeAft) {
+			endHoursMin = freeTimeMon;
+		}
+  }
+  var daysBetweenlist = daysBetween(startTime, endTime);
+	let effectiveLeaveDate = daysBetweenlist.filter(date => !fillterDatas.includes(date)).filter(date => (new Date(date).getDay() != 6 && new Date(date).getDay() != 0))
+	console.log("有效的请假日期数组【过滤节假日期后的】", effectiveLeaveDate)
+	if(startTime > endTime){
+		Vue.prototype.$Message.warning({
+                content: '开始时间需小于结束时间',
+                duration: 3
+            });
+		return false;
+	}
+	
+	if(!effectiveLeaveDate.includes(startTime.split(' ')[0]) || !effectiveLeaveDate.includes(endTime.split(' ')[0])){
+		//如果开始或者结束时间不在工作日提醒重新选择
+		Vue.prototype.$Message.warning({
+                content: '调休开始、结束时间需在工作日，请您重新选择',
+                duration: 3
+            });
+		return false;
+	}
+
+      //如果beginHoursMin时间小于上班时间都算上班时间
+    },
   },
   created() {
     this.getHdyear();
+    //this.getLeave()
   },
   filters: {
     formatDate(time) {
@@ -460,8 +528,8 @@ export default {
       let date = new Date(time);
       console.log(new Date(time));
       return formatDate(date, "yyyy-MM-dd");
-    }
-  }
+    },
+  },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -477,9 +545,7 @@ export default {
   text-align: center;
   line-height: 1.6rem;
   height: 1.6rem;
-  font-size: 0.8rem; 
+  font-size: 0.8rem;
   margin: 0 auto;
- 
- 
 }
 </style>

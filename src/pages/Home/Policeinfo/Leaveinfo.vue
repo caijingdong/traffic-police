@@ -28,11 +28,24 @@
             <div class="block">
               <span class="lt">附件：</span>
               <ul>
-                <li @click="preView" class="pictures" v-for="item in imgs" :key="item">
+                <!--  <li @click="preView(i)" class="pictures" v-for="(item,i) in imgs" :key="i">
                   <img :src="imgurl + item" />
-                </li>
+                </li>-->
+                <van-image
+                  width="4rem"
+                  height="4rem"
+                  fit="cover"
+                  :src="item"
+                  v-for="(item,i) in pics"
+                  :key="i"
+                  @click="preView(i)"
+                  style="margin-right:10px"
+                />
               </ul>
             </div>
+            <!--<van-image-preview v-model="showpic" :images="pics" @change="onChange">
+ <template v-slot:index>第{{ index }}页</template>
+            </van-image-preview>-->
           </div>
         </div>
       </div>
@@ -45,10 +58,10 @@
 <script >
 import axios from "axios";
 import { pathway } from "@/api/common";
-import { ImagePreview } from 'vant';
+import { ImagePreview } from "vant";
 export default {
   components: {
-     [ImagePreview.Component.name]: ImagePreview.Component,
+    [ImagePreview.Component.name]: ImagePreview.Component,
   },
   created() {
     //this.getLeavelist();
@@ -56,7 +69,9 @@ export default {
   },
   data() {
     return {
-      show:true,
+      //showpic: true,
+      //index: 0,
+      show: false,
       ty: 1,
       travelData: [],
       nowName: {},
@@ -65,7 +80,8 @@ export default {
       name: "",
       id: this.$route.params.id,
       imgs: [],
-      imgurl: "http://115.223.34.119:9095"
+      imgurl: "http://115.223.34.119:9095",
+      pics: [],
     };
   },
   methods: {
@@ -77,15 +93,20 @@ export default {
       this.axios({
         method: "post",
         url: "/js/a/ams/takeleave/takeLeave/personalListData",
-        params
+        params,
       })
-        .then(res => {
+        .then((res) => {
           this.leaveinfo = res.data.list[0];
           this.imgs = [].concat(this.leaveinfo.imgUrl.split(","));
-          let poped = this.imgs.pop();
           console.log(this.imgs)
+          let poped = this.imgs.pop();
+          let arr = [];
+          this.imgs.forEach((item) => {
+            this.pics.push(this.imgurl + item);
+          });
+          console.log(this.pics);
         })
-        .catch(e => {
+        .catch((e) => {
           this.$toast("user.get fail1: " + JSON.stringify(e));
         });
     },
@@ -94,9 +115,9 @@ export default {
       this.axios({
         method: "post",
         url: "/js/a/ams/takeleave/takeLeave/takeLeaveAudit",
-        params
+        params,
       })
-        .then(res => {
+        .then((res) => {
           if (flowStateKey === 12) {
             this.$toast("审核通过");
             this.$router.push({ name: "Policeinfo" });
@@ -105,12 +126,19 @@ export default {
             this.$router.push({ name: "Policeinfo" });
           }
         })
-        .catch(e => {
+        .catch((e) => {
           this.$toast("user.get fail1: " + JSON.stringify(e));
         });
     },
-    preView() {}
-  }
+    preView(i) {
+      ImagePreview({
+        images: this.pics,
+        showIndex: true,
+        loop: true,
+        startPosition: i,
+      });
+    },
+  },
 };
 </script>
 <style scoped lang="less">

@@ -21,7 +21,9 @@ import {
   Switch,
   ImagePreview
 } from 'vant';
+import { Image as VanImage } from 'vant';
 
+Vue.use(VanImage);
 //import { ImagePreview } from 'vant';
 Vue.use(Toast);
 Vue.use(Popup);
