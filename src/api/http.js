@@ -3,7 +3,7 @@ import axios from 'axios'
 const baseUrl = process.env.NODE_ENV === 'production' ? '/jee' : ''
 const service = axios.create({
   timeout: 2000000,
-  baseURL: baseUrl,
+  //baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   }, 

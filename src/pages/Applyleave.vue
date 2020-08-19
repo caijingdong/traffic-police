@@ -48,7 +48,7 @@
     </van-cell-group>
     <van-cell-group>
       <van-field
-        v-model="getLeavedays"
+        v-model="days"
         type="number"
         label="时长(天)"
         placeholder="请输入请假天数"
@@ -80,7 +80,6 @@
         style="border:none;margin-bottom:0.4rem"
         label-align="left"
       />
-
       <van-uploader
         style="margin-left:14px"
         multiple
@@ -92,7 +91,7 @@
       />
     </van-cell-group>
     <div class="anniu" @click="postData">
-      <p>提交</p>
+      <p>提交{{getLeavedays}}</p>
     </div>
     <loading v-show="loading" ref="loading"></loading>
   </div>
@@ -123,30 +122,30 @@ export default {
       },
       config: "",
       isLoadingShow: true,
-      hdYear: "",
-      leaveYear: "",
-      message: "",
-      colovalue: "",
-      value: "",
-      value1: "",
-      hdYear: "",
-      business: "",
+      hdYear: "", //年假
+      leaveYear: "", //剩余年假时间
+      message: "", //请假理由
+      colovalue: "", //请假类型
+      //value: "",
+      //value1: "",
+      //business: "",
       endTime: "请选择时间",
       startTime: "请选择时间",
       className: "",
-      days: "",
-      hours: "",
+      days: "", //请假时间（天）
+      hours: "", //请假时间（小时）
       loading: false,
-      pictures: "",
+      //pictures: "",
       fileList: [],
+      fileList1: [],
       minDate: new Date(2020, 0, 1),
       maxDate: new Date(2025, 10, 1),
       currentDate: new Date(),
       currentDate1: new Date(),
       imageData: [], // 准备保存的图片列表
       countIndex: 9, // 可选图片剩余的数量
-      datas: {},
-      files: [],
+      datas: {}, //提交的表单数据
+      files: [], //上传的图片
       params: "",
     };
   },
@@ -176,166 +175,10 @@ export default {
       } else {
         return "";
       }
-    },
-    getLeavedays() {
-      var startTime = this.startTime.replace(/-/g, "/");
-      var beginArr = (startTime || "").split(" ");
-      var beginMonth = parseInt((beginArr[0] || "").split("/")[1]);
-      //console.log(beginMonth)
-      var beginDay = parseInt((beginArr[0] || "").split("/")[2]);
-      var beginHours = parseInt((beginArr[1] || "").split(":")[0]);
-      var beginMin = parseInt((beginArr[1] || "").split(":")[1]);
-      var beginHoursMin = beginHours + beginMin / 60;
-      //console.log(beginHoursMin)
-      var endTime = this.endTime.replace(/-/g, "/");
-      var endArr = (endTime || "").split(" ");
-      var endMonth = parseInt((endArr[0] || "").split("/")[1]);
-      var endDay = parseInt((endArr[0] || "").split("/")[2]);
-      var endHours = parseInt((endArr[1] || "").split(":")[0]);
-      var endMin = parseInt((endArr[1] || "").split(":")[1]);
-      var endHoursMin = endHours + endMin / 60;
-      //console.log(endHoursMin)
-      //如果beginHoursMin时间小于上班时间都算上班时间
-      var stWorkTime = 8.5;
-      var enWrokTime = 17.5;
-      var freeTimeMon = 11.5;
-      var freeTimeAft = 14;
-      var freeTime = freeTimeAft - freeTimeMon;
-      var days;
-      var hours;
-      var date;
-      if (beginHoursMin <= stWorkTime) {
-        beginHoursMin = stWorkTime;
-      }
-      //如果endHoursMin时间大于上班时间都算下班时间
-      if (endHoursMin >= enWrokTime) {
-        endHoursMin = enWrokTime;
-      }
-      //如果endHoursMin时间小于上班时间都算下班时间
-      if (endHoursMin <= stWorkTime) {
-        endHoursMin = stWorkTime;
-      }
-      //如果结束时间在freeTimeMon和freeTimeAft之间都算freeTimeMon
-      var isFreeTime = true;
-      if (isFreeTime == true) {
-        if (endHoursMin >= freeTimeMon && endHoursMin <= freeTimeAft) {
-          endHoursMin = freeTimeMon;
-        }
-      }
-      var daysBetweenlist = daysBetween(startTime, endTime);
-      //console.log(daysBetweenlist)
-      var fillterDatas = [
-        "2020/10/01",
-        "2020/10/02",
-        "2020/10/03",
-        "2020/10/04",
-        "2020/10/05",
-        "2020/10/06",
-        "2020/10/07",
-        "2020/10/08",
-      ];
-      let effectiveLeaveDate = daysBetweenlist
-/*         .filter((date) => !fillterDatas.includes(date))
-        .filter(
-          (date) => new Date(date).getDay() != 6 && new Date(date).getDay() != 0
-        );
-      console.log("有效的请假日期数组【过滤节假日期后的】", effectiveLeaveDate); */
-      if (startTime > endTime) {
-      }
-
-/*       if (
-        !effectiveLeaveDate.includes(startTime.split(" ")[0]) ||
-        !effectiveLeaveDate.includes(endTime.split(" ")[0])
-      ) {
-        //如果开始或者结束时间不在工作日提醒重新选择
-      } */
-      if (effectiveLeaveDate.length > 0) {
-        var daysBetweenLen = effectiveLeaveDate.length;
-        //console.log(daysBetweenLen);
-        //午休
-        if (isFreeTime == true) {
-          var hour = enWrokTime - stWorkTime - freeTime;
-          if (daysBetweenLen == 1) {
-            //同一天
-            if (endHoursMin - freeTimeAft > 0, beginHoursMin < freeTimeMon) {
-              hours = endHoursMin - beginHoursMin - freeTime;
-              console.log(hours + "同一天跨下午");
-            } else {
-              hours = endHoursMin - beginHoursMin;
-              console.log(hours + "同一天");
-            }
-          } else if (daysBetweenLen == 2) {
-            //跨一天
-            //第一天的时长
-            hours = enWrokTime - beginHoursMin;
-            //是否有午休
-            if (beginHoursMin <= freeTimeMon) hours = hours - freeTime;
-           // console.log(hours + "跨一天有午休");
-            //第二天的时长
-            hours += endHoursMin - stWorkTime;
-            //是否有午休
-            if (endHoursMin >= freeTimeAft) hours = hours - freeTime;
-           // console.log(hours + "跨一天有午休1");
-          } else {
-            //跨两天以上
-            //第一天的时长
-            hours = enWrokTime - beginHoursMin;
-            //是否有午休
-            if (beginHoursMin <= freeTimeMon) hours = hours - freeTime;
-            //中间时长
-            hours += (daysBetweenLen - 2) * hour;
-            //最后一天时长
-            hours += endHoursMin - stWorkTime;
-            //console.log(hours + "跨两天");
-            //是否有午休
-            if (endHoursMin >= freeTimeAft) hours = hours - freeTime;
-            //console.log(hours + "跨两天");
-          }
-          days = hours / hour;
-          days = parseInt(days*100)/100;
-          /*           hours = hours % hour;
-          date = {
-            days: days,
-            hours: hours,
-          }; */
-        } else {
-          //非午休
-          var hour = enWrokTime - stWorkTime;
-          if (daysBetweenLen == 1) {
-            //同一天
-            hours = endHoursMin - beginHoursMin;
-          } else if (daysBetweenLen == 2) {
-            //跨一天
-            hours = enWrokTime - beginHoursMin;
-            //第二天的时长
-            hours += endHoursMin - stWorkTime;
-          } else {
-            //跨两天以上
-            //第一天的时长
-            hours = enWrokTime - beginHoursMin;
-            //中间时长
-            hours += (daysBetweenLen - 2) * hour;
-            //最后一天时长
-            hours += endHoursMin - stWorkTime;
-          }
-          days = hours / hour;
-          days = parseInt(days*100)/100;
-          /*           hours = hours % hour;
-          date = {
-            days: days,
-            hours: hours,
-          }; */
-        }
-        //console.log(date);
-        this.days = days;
-        //this.hours = date.hours
-        return days;
-      }
-    },
+    }
   },
   methods: {
     onOversize(file) {
-      console.log(file);
       Toast("文件大小不能超过 10M");
     },
     afterRead(file, detail) {
@@ -450,10 +293,8 @@ export default {
         dd.biz.util.datetimepicker({
           format: "yyyy-MM-dd HH:mm",
           value: value1,
-          //默认显示
           onSuccess: function (result) {
             that.startTime = result.value;
-            // alert(that.value)
           },
           onFail: function (err) {},
         });
@@ -487,24 +328,6 @@ export default {
         });
       });
     },
-    getType() {
-      dd.ready(function () {
-        dd.biz.calendar.chooseInterval({
-          defaultStart: 1494415396228,
-          defaultEnd: 1494415396228,
-          onSuccess: function (result) {
-            //onSuccess将在点击确定之后回调
-            /*{
-            start: 1514908800000,
-            end: 1514995200000,
-            timezone:8
-        }
-        */
-          },
-          onFail: function (err) {},
-        });
-      });
-    },
     postData() {
       var a = new Date(this.endTime).getTime();
       var b = new Date(this.startTime).getTime();
@@ -522,16 +345,14 @@ export default {
       formData.append("leaveDays", this.days);
       formData.append("hdYear", this.hdYear);
       this.params = formData;
-      /*  if (d === "" || c === "" || a === "" || b === "" || e === "") {
-        alert("必填项不能为空");
-      } else */
-
       if (e === "") {
         this.$toast("请假类型不能为空");
       } else if (h === "请选择时间" || f === "请选择时间") {
         this.$toast("请选择开始时间或结束时间");
       } else if (c === "") {
         this.$toast("请假天数不能为空");
+      } else if (c == "0"){
+        this.$toast("请假天数不能为0");
       } else if (d === "") {
         this.$toast("请假事由不能为空");
       } else if (a < b) {
@@ -588,11 +409,9 @@ export default {
         this.leaveYear = res.data.annualLeaveRemaining;
       });
     },
-  
   },
   created() {
     this.getHdyear();
-    //this.getLeave()
   },
   filters: {
     formatDate(time) {
